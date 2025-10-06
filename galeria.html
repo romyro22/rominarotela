@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Galería de Arte Moderna</title>
+<style>
+  :root{
+    --bg:#0f1115;
+    --card:#151925;
+    --muted:#9aa4b2;
+    --text:#e8ecf1;
+    --accent:#7c5cff;
+    --accent-2:#18c6a3;
+    --border:rgba(255,255,255,.08);
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Segoe UI Emoji";
+    background: radial-gradient(1200px 800px at 10% -10%, #1a2030 0%, #0f1115 60%) no-repeat fixed;
+    color:var(--text);
+  }
+  header{
+    position:sticky; top:0; z-index:5;
+    backdrop-filter:saturate(130%) blur(8px);
+    background:linear-gradient(to bottom, rgba(21,25,37,.95), rgba(21,25,37,.6));
+    border-bottom:1px solid var(--border);
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  .topbar{
+    display:grid; gap:14px;
+    grid-template-columns: 1fr 1fr 140px;
+    align-items:center;
+  }
+  h1{margin:0;font-size:clamp(20px,3vw,28px);letter-spacing:.5px}
+  .muted{color:var(--muted)}
+  .controls{
+    display:flex; gap:10px; align-items:center;
+  }
+  .input, select, button{
+    background:#0f131e; border:1px solid var(--border); color:var(--text);
+    padding:12px 14px; border-radius:12px; outline:none; width:100%;
+  }
+  .input::placeholder{color:#6b7482}
+  button{
+    cursor:pointer; border:1px solid transparent; transition:.2s ease;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    font-weight:600;
+  }
+  button:hover{filter:brightness(1.08)}
+  main{padding:20px 0 60px}
+  .grid{
+    display:grid; gap:18px;
+    grid-template-columns: repeat( auto-fit, minmax(480px, 1fr) );
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .25s ease;
+  }
+  .card:hover{transform:translateY(-4px); border-color:rgba(124,92,255,.35)}
+  .thumb{
+    aspect-ratio: 4/3;
+    background:#0f131e;
+    display:block; width:100%;
+  }
+  .thumb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .card .body{padding:16px 16px 18px}
+  .title{font-weight:700; font-size:16px; margin:0 0 6px}
+  .desc{color:var(--muted); font-size:14px; line-height:1.5; margin:0 0 10px; min-height:3em}
+  .tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+  .tag{
+    font-size:12px; padding:6px 10px; border-radius:999px;
+    border:1px solid var(--border); color:#c9d2df; background:#0e1420;
+  }
+  .card .footer{
+    padding:12px 16px 18px;
+    display:flex; justify-content:space-between; align-items:center; gap:10px
+  }
+  .btn{
+    appearance:none; border-radius:12px; padding:10px 12px;
+    background:#141a28; border:1px solid var(--border); color:var(--text);
+    cursor:pointer; transition:.2s ease;
+  }
+  .btn:hover{border-color:rgba(255,255,255,.2)}
+  .btn.primary{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    border: none; font-weight:700;
+  }
+
+  /* Modal */
+  dialog{
+    width:min(900px, 96vw);
+    border:none; border-radius:22px; padding:0; color:var(--text);
+    background:#121826; box-shadow:0 30px 90px rgba(0,0,0,.5);
+  }
+  dialog::backdrop{background:rgba(0,0,0,.55)}
+  .modal{
+    display:grid; grid-template-columns: 1fr 1.1fr; gap:0;
+  }
+  .modal .left{
+    padding:0; border-right:1px solid var(--border); background:#0f131e
+  }
+  .modal .left .hero{aspect-ratio:4/3; width:100%; height:100%; object-fit:cover; display:block}
+  .modal .right{padding:22px}
+  .modal h2{margin:0 0 8px; font-size:22px}
+  .modal .meta{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0 14px}
+  .kv{background:#0f131e; border:1px solid var(--border); border-radius:12px; padding:10px 12px}
+  .kv .k{font-size:12px; color:var(--muted); margin-bottom:4px}
+  .kv .v{font-size:14px}
+  .modal .section{margin-top:14px}
+  .modal .section h3{font-size:14px; letter-spacing:.4px; text-transform:uppercase; color:#9aa4b2; margin:0 0 6px}
+  .modal .section p{margin:0; color:#dbe3ee; line-height:1.6}
+  .modal .actions{
+    display:flex; justify-content:flex-end; gap:10px; margin-top:20px
+  }
+  .close-x{
+    position:absolute; right:12px; top:10px; border:none; background:transparent; color:#cdd6e3;
+    font-size:22px; line-height:1; cursor:pointer; padding:6px;
+  }
+
+  /* Utilidades */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  .pill{font-size:12px; color:#cfe; background:rgba(124,92,255,.15); border:1px solid rgba(124,92,255,.35); padding:6px 10px; border-radius:999px}
+
+  /* Responsive modal en pantallas pequeñas */
+  @media (max-width: 820px){
+    .modal{grid-template-columns:1fr}
+    .modal .left{display:none}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div>
+          <h1>Galería de Arte Moderna</h1>
+          <div class="muted" style="font-size:13px">Obras contemporáneas — catálogo interactivo</div>
+        </div>
+        <div class="controls">
+          <input id="q" class="input" type="search" placeholder="Buscar por nombre, inspiración, técnica, material…" aria-label="Buscar obras" />
+        </div>
+        <div class="controls">
+          <select id="filter-tech" aria-label="Filtrar por técnica">
+            <option value="">Todas las técnicas</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="results-count" class="muted" style="margin:6px 2px 16px"></div>
+    <section id="grid" class="grid" aria-live="polite"></section>
+  </main>
+
+  <!-- Modal -->
+  <dialog id="dlg" aria-labelledby="dlg-title" aria-describedby="dlg-desc">
+    <button class="close-x" aria-label="Cerrar" onclick="closeModal()">✕</button>
+    <div class="modal">
+      <div class="left">
+        <img id="dlg-img" class="hero" alt="" />
+      </div>
+      <div class="right">
+        <span id="dlg-tech-pill" class="pill"></span>
+        <h2 id="dlg-title"></h2>
+        <p id="dlg-desc" class="muted" style="margin-top:-2px"></p>
+
+        <div class="meta">
+          <div class="kv">
+            <div class="k">Inspiración</div>
+            <div class="v" id="dlg-inspiration"></div>
+          </div>
+          <div class="kv">
+            <div class="k">Tamaño</div>
+            <div class="v" id="dlg-size"></div>
+          </div>
+          <div class="kv">
+            <div class="k">Técnica</div>
+            <div class="v" id="dlg-technique"></div>
+          </div>
+          <div class="kv">
+            <div class="k">Materiales</div>
+            <div class="v" id="dlg-materials"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Descripción</h3>
+          <p id="dlg-longdesc"></p>
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="closeModal()">Cerrar</button>
+          <button class="btn primary" id="dlg-copy">Copiar ficha</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+<script>
+  // ====== Datos de ejemplo (edita libremente) ======
+  const artworks = [
+    {
+      id: "orbital-01",
+      name: "Orbital 01",
+      description: "Capas de color orbitando un vacío central.",
+      longDescription:
+        "Composición construida con veladuras finas que crean profundidad. El vacío central sugiere una pausa, un respiro entre ritmos cromáticos.",
+      inspiration: "Silencio entre movimientos de una pieza de jazz.",
+      size: "80 × 100 cm",
+      technique: "Acrílico sobre lienzo",
+      materials: "Acrílicos fluidos, médium, espátulas, barniz satinado",
+      image: svgPlaceholder("Orbital 01", "#7c5cff"),
+      tags: ["geométrico","abstracto"]
+    },
+    {
+      id: "memoria-urbana",
+      name: "Memoria Urbana",
+      description: "Trama de líneas que evocan cartografías emocionales.",
+      longDescription:
+        "La pieza explora el recuerdo de la ciudad a través de capas de líneas y transparencias, como si el plano se superpusiera a la memoria.",
+      inspiration: "Mapas y recorridos cotidianos.",
+      size: "60 × 90 cm",
+      technique: "Tinta y gouache",
+      materials: "Tinta china, gouache, papel de algodón 300 g",
+      image: svgPlaceholder("Memoria Urbana", "#18c6a3"),
+      tags: ["línea","cartografía"]
+    },
+    {
+      id: "cobalto-nocturno",
+      name: "Cobalto Nocturno",
+      description: "Profundidades azules con destellos metálicos.",
+      longDescription:
+        "Pinceladas densas contrastadas con texturas metalizadas que emergen como luces en la noche.",
+      inspiration: "Horizontes urbanos después de la lluvia.",
+      size: "100 × 100 cm",
+      technique: "Óleo y pan de metal",
+      materials: "Óleos, pan de plata, trementina, barniz",
+      image: svgPlaceholder("Cobalto Nocturno", "#2f6df6"),
+      tags: ["nocturno","textura"]
+    },
+    {
+      id: "flora-digital",
+      name: "Flora Digital",
+      description: "Botánica imaginaria generativa.",
+      longDescription:
+        "Motivos florales sintetizados en módulos repetitivos, explorando el límite entre natural y algorítmico.",
+      inspiration: "Patrones generativos y herbario clásico.",
+      size: "70 × 70 cm",
+      technique: "Mixta",
+      materials: "Acrílico, aerosol, esténcil, lápiz graso",
+      image: svgPlaceholder("Flora Digital", "#ff6ea9"),
+      tags: ["orgánico","patrón"]
+    },
+    {
+      id: "arena-y-tiempo",
+      name: "Arena y Tiempo",
+      description: "Estratos que sugieren erosión y memoria.",
+      longDescription:
+        "Raspados y veladuras sucesivas dejan ver capas antiguas como un corte geológico cargado de historia.",
+      inspiration: "Acantilados y capas sedimentarias.",
+      size: "120 × 80 cm",
+      technique: "Acrílico y collage",
+      materials: "Acrílico, papel artesanal, médiums de textura",
+      image: svgPlaceholder("Arena y Tiempo", "#f6a22f"),
+      tags: ["materia","estratos"]
+    }
+  ];
+
+  // ====== Lógica de interfaz ======
+  const grid = document.getElementById('grid');
+  const q = document.getElementById('q');
+  const filterTech = document.getElementById('filter-tech');
+  const resultsCount = document.getElementById('results-count');
+
+  // Popular filtro de técnicas
+  (function fillTechniques(){
+    const set = new Set(artworks.map(a => a.technique));
+    [...set].sort().forEach(t=>{
+      const opt = document.createElement('option');
+      opt.value = t; opt.textContent = t;
+      filterTech.appendChild(opt);
+    });
+  })();
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,""); }
+
+  function matches(a, query, tech){
+    const hay = [
+      a.name, a.description, a.longDescription, a.inspiration, a.technique,
+      a.materials, ...(a.tags||[])
+    ].map(normalize).join(" | ");
+    const okQ = !query || hay.includes(query);
+    const okT = !tech || a.technique === tech;
+    return okQ && okT;
+  }
+
+  function render(list){
+    grid.innerHTML = '';
+    list.forEach(a=>{
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <a href="#" class="thumb" aria-label="Abrir ${escapeHtml(a.name)}">
+          <img loading="lazy" src="${a.image}" alt="Vista previa de ${escapeHtml(a.name)}">
+        </a>
+        <div class="body">
+          <h3 class="title">${escapeHtml(a.name)}</h3>
+          <p class="desc">${escapeHtml(a.description)}</p>
+          <div class="tags">
+            <span class="tag">${escapeHtml(a.technique)}</span>
+            <span class="tag">${escapeHtml(a.size)}</span>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn" data-id="${a.id}" aria-label="Detalles de ${escapeHtml(a.name)}">Ficha</button>
+          <button class="btn primary" data-id="${a.id}" aria-label="Abrir ${escapeHtml(a.name)}">Ver</button>
+        </div>
+      `;
+      // Acciones
+      card.querySelectorAll('a.thumb, .btn.primary, .btn:not(.primary)').forEach(el=>{
+        el.addEventListener('click', (ev)=>{ ev.preventDefault(); openModal(a.id); });
+      });
+      grid.appendChild(card);
+    });
+    resultsCount.textContent = list.length
+      ? `${list.length} obra${list.length>1?'s':''} encontradas`
+      : 'Sin resultados';
+  }
+
+  function currentList(){
+    const query = normalize(q.value.trim());
+    const tech = filterTech.value;
+    return artworks.filter(a => matches(a, query, tech));
+  }
+
+  q.addEventListener('input', ()=> render(currentList()));
+  filterTech.addEventListener('change', ()=> render(currentList()));
+
+  // Inicial
+  render(artworks);
+
+  // ====== Modal ======
+  const dlg = document.getElementById('dlg');
+  const dlgImg = document.getElementById('dlg-img');
+  const dlgTitle = document.getElementById('dlg-title');
+  const dlgDesc = document.getElementById('dlg-desc');
+  const dlgLong = document.getElementById('dlg-longdesc');
+  const dlgInsp = document.getElementById('dlg-inspiration');
+  const dlgSize = document.getElementById('dlg-size');
+  const dlgTech = document.getElementById('dlg-technique');
+  const dlgMat = document.getElementById('dlg-materials');
+  const dlgTechPill = document.getElementById('dlg-tech-pill');
+  const dlgCopy = document.getElementById('dlg-copy');
+
+  function openModal(id){
+    const a = artworks.find(x=>x.id===id);
+    if(!a) return;
+    dlgImg.src = a.image;
+    dlgImg.alt = `Imagen de la obra ${a.name}`;
+    dlgTitle.textContent = a.name;
+    dlgDesc.textContent = a.description;
+    dlgLong.textContent = a.longDescription;
+    dlgInsp.textContent = a.inspiration;
+    dlgSize.textContent = a.size;
+    dlgTech.textContent = a.technique;
+    dlgMat.textContent = a.materials;
+    dlgTechPill.textContent = a.technique;
+
+    dlgCopy.onclick = ()=>{
+      const ficha = `Obra: ${a.name}
+Descripción: ${a.longDescription}
+Inspiración: ${a.inspiration}
+Tamaño: ${a.size}
+Técnica: ${a.technique}
+Materiales: ${a.materials}`;
+      navigator.clipboard.writeText(ficha).then(()=>{
+        dlgCopy.textContent = "Copiado ✓";
+        setTimeout(()=> dlgCopy.textContent = "Copiar ficha", 1200);
+      });
+    };
+
+    if(typeof dlg.showModal === "function"){ dlg.showModal(); }
+    else{ alert("Tu navegador no soporta <dialog>."); }
+  }
+  function closeModal(){ if(dlg.open) dlg.close(); }
+  window.closeModal = closeModal;
+  window.openModal = openModal;
+
+  // Cerrar con ESC
+  document.addEventListener('keydown', (e)=>{ if(e.key==="Escape") closeModal(); });
+
+  // ====== Utilidades ======
+  function escapeHtml(s=''){
+    return s.replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
+  }
+
+  // Genera un placeholder SVG lindo con el título
+  function svgPlaceholder(title, color="#7c5cff"){
+    const t = encodeURIComponent(title);
+    const svg = `
+      <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'>
+        <defs>
+          <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+            <stop offset='0%' stop-color='${color}' stop-opacity='.95'/>
+            <stop offset='100%' stop-color='#0f1115' stop-opacity='1'/>
+          </linearGradient>
+        </defs>
+        <rect width='100%' height='100%' fill='url(#g)'/>
+        <g opacity='.2'>
+          <circle cx='200' cy='180' r='120' fill='white'/>
+          <circle cx='980' cy='720' r='140' fill='white'/>
+          <rect x='520' y='320' width='160' height='160' fill='white' rx='16'/>
+        </g>
+        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+              font-size='64' font-family='Inter, Arial, sans-serif'
+              fill='white' opacity='.92'>${t}</text>
+      </svg>`;
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+</script>
+</body>
+</html>

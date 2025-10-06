@@ -135,13 +135,15 @@
         background:linear-gradient(180deg,var(--card),#1C0F40);
         transition:box-shadow .15s ease, transform .15s ease, border-color .15s ease;
       }
-      .tab-card .tab-texts{display:grid;gap:6px}
+      .tab-card .tab-texts{display:grid;gap:6px;color: white;}
       .tab-card[aria-selected="true"]{
         border-color:#ffffff33;
         box-shadow:0 10px 30px rgba(0,0,0,.35), 0 0 0 2px #ffffff10 inset;
         transform:translateY(-2px);
+        
       }
-      .tab-card:focus-visible{outline:2px solid var(--accent-teal);outline-offset:2px}
+      .tab-card[aria-selected="true"] .tab-texts {color: yellow!important;}
+      .tab-card:focus-visible{outline:2px solid var(--accent-teal);outline-offset:2px;}
       
       /* Panel principal (se ve como una card grande) */
       .tab-panels{margin-top:8px}
@@ -154,7 +156,7 @@
       .panel-body{display:grid;align-content:center;gap:10px}
       .panel-body h3{margin:0}
       .panel-tags{display:flex;gap:8px;flex-wrap:wrap}
-      .panel-cta{margin-top:4px}
+      .panel-cta{margin-bottom:14px; display: flex; justify-content: center;}
       
       
       /* scroll suave por si JS está apagado */
@@ -262,10 +264,12 @@
     
     <header>
       <div class="container nav">
-        <div class="brand">romy.dev</div>
+        <div class="brand">
+          <img src="img/logomrri.png" alt="romy.dev" class="thumb-img" loading="lazy" decoding="async" style="width: 150px;">
+        </div>
         <nav style="display:flex;gap:12px;align-items:center">
           <span class="chip">Tecnología + Arte</span>
-          <a class="btn btn" href="#contacto">Contacto</a>
+          <a class="btn btn" target="_blank" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración.">Contacto</a>
         </nav>
       </div>
     </header>
@@ -504,7 +508,7 @@
         <div id="proyectos" style="padding: 14px 0;"></div>
         <section>
           <div class="container">
-            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-magenta);box-shadow:0 0 0 6px #FF3C8E30"></span> Proyectos</h2>
+            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-magenta);box-shadow:0 0 0 6px #FF3C8E30"></span> Proyectos laborales</h2>
             <div class="grid-3">
               
               <article class="card project">
@@ -600,7 +604,7 @@
             <div class="container">
               <h2 class="sect-title">
                 <span class="accent-dot" style="background:var(--accent-orange);box-shadow:0 0 0 6px #FF8A0030"></span>
-                Proyectos destacados
+                Proyectos personales
               </h2>
               
               <!-- TAB LIST: cards -->
@@ -616,8 +620,7 @@
                     </svg>
                   </div>
                   <div class="tab-texts">
-                    <strong>Web design</strong>
-                    <span class="badge">UI • Layout • Grid</span>
+                    <strong>Emprendimientos</strong>
                   </div>
                 </button>
                 
@@ -632,7 +635,6 @@
                   </div>
                   <div class="tab-texts">
                     <strong>Desarrollo web</strong>
-                    <span class="badge">HTML • CSS • JS</span>
                   </div>
                 </button>
                 
@@ -649,7 +651,6 @@
                   </div>
                   <div class="tab-texts">
                     <strong>Ilustración</strong>
-                    <span class="badge">Gouache • Digital</span>
                   </div>
                 </button>
                 
@@ -664,7 +665,6 @@
                   </div>
                   <div class="tab-texts">
                     <strong>UX/UI design</strong>
-                    <span class="badge">Prototipos • Flujos</span>
                   </div>
                 </button>
               </div>
@@ -674,15 +674,23 @@
                 <!-- Panel 1 -->
                 <div id="panel-webdesign" role="tabpanel" aria-labelledby="tab-webdesign">
                   <div class="panel-wrap">
-                    <div class="panel-media" style="background-image:linear-gradient(135deg,#3AA0FF33,#FF3C8E22)"></div>
+                    <div class="panel-media" style="background-image:linear-gradient(135deg,#3AA0FF33,#FF3C8E22)">
+                      <img src="img/emprendimientos.png" alt="Emprendimientos" class="thumb-img" loading="lazy" decoding="async">
+                    </div>
                     <div class="panel-body">
-                      <h3>Web design — Sistemas de layout</h3>
-                      <p class="muted">Diseño de interfaces responsivas con grid/fluid layout, jerarquía visual y tipografía. Guías de componentes y tokens.</p>
-                      <div class="panel-tags">
+                      <h3>Emprendimientos</h3>
+                      <p class="muted">
+                        <p style="margin: 0;">Combino mi perfil creativo para impulsar proyectos propios que reflejan mi visión integral del arte y el diseño. </p>
+                        <p style="margin: 0;">Fundé <strong><i>Rotiba</i></strong>, un emprendimiento dedicado a la creación de regalos únicos que conectan con la emoción y la identidad de cada persona. </p>
+                        <p style="margin: 0;">Además, <strong><i>Creaciones Romy Rotela</i></strong>, donde desarrollo obras originales en óleo, acrílico, gouache, acuarela y técnicas digitales. </p>
+                        <p style="margin: 0;">Ambos proyectos me permiten unir arte, innovación y gestión, consolidando una marca personal basada en la autenticidad, la estética y el valor artesanal.</p>
+                      </p>
+                      <!--<div class="panel-tags">
                         <span class="badge">Grid</span><span class="badge">Design tokens</span><span class="badge">Accesibilidad</span>
-                      </div>
+                      </div>-->
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" href="#">Caso de estudio</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://www.instagram.com/creaciones_romy_rotela?igsh=ZTI0NmM4dXd1djN5" style="margin-right: 15px;">creaciones_romy_rotela</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://www.instagram.com/rotibapy?igsh=MXQwdm1seTg4a2R1Ng==">rotibapy</a>
                       </div>
                     </div>
                   </div>
@@ -691,15 +699,19 @@
                 <!-- Panel 2 -->
                 <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
                   <div class="panel-wrap">
-                    <div class="panel-media" style="background-image:linear-gradient(135deg,#22C6C633,#FFD24D22)"></div>
+                    <div class="panel-media" style="background-image:linear-gradient(135deg,#22C6C633,#FFD24D22)">
+                      <img src="img/programacion.png" alt="Programación" class="thumb-img" loading="lazy" decoding="async">
+                    </div>
                     <div class="panel-body">
-                      <h3>Desarrollo web — Frontend productivo</h3>
-                      <p class="muted">Componentes reutilizables, performance (LCP/CLS), integración Django/Wagtail, y tooling moderno.</p>
-                      <div class="panel-tags">
-                        <span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JS</span>
-                      </div>
+                      <h3>Desarrollo web</h3>
+                      <p class="muted">
+                        <p style="margin: 0;">Desarrollo soluciones web completas, desde el diseño del frontend hasta la lógica del backend.</p>
+                        <p style="margin: 0;">Utilizo HTML, CSS, JavaScript y React para crear interfaces dinámicas y modernas, mientras que con Node.js implemento estructuras escalables y eficientes.</p>
+                        <p style="margin: 0;">También trabajo con bases de datos relacionales y no relacionales, garantizando un flujo de información seguro y optimizado.</p>
+                        <p style="margin: 0;">Mi objetivo es transformar ideas en productos digitales funcionales, estéticos y orientados a la experiencia del usuario.</p>
+                      </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" href="#">Ver repositorio</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://github.com/romyro22">Ver repositorio</a>
                       </div>
                     </div>
                   </div>
@@ -708,15 +720,19 @@
                 <!-- Panel 3 -->
                 <div id="panel-illustration" role="tabpanel" aria-labelledby="tab-illustration" hidden>
                   <div class="panel-wrap">
-                    <div class="panel-media" style="background-image:linear-gradient(135deg,#FFD24D33,#FF8A0022)"></div>
+                    <div class="panel-media" style="background-image:linear-gradient(135deg,#FFD24D33,#FF8A0022)">
+                      <img src="img/ilustracion.png" alt="Ilustraciones" class="thumb-img" loading="lazy" decoding="async">
+                    </div>
                     <div class="panel-body">
-                      <h3>Ilustración — Visuales para productos</h3>
-                      <p class="muted">Ilustraciones editoriales y piezas para landing pages. Proceso: brief → sketch → color → export.</p>
-                      <div class="panel-tags">
-                        <span class="badge">Gouache</span><span class="badge">Digital</span>
-                      </div>
+                      <h3>Ilustración</h3>
+                      <p class="muted">
+                        <p style="margin: 0;">Fusiono técnicas tradicionales con ilustración digital para dar vida a conceptos visuales únicos. </p>
+                        <p style="margin: 0;">Las técnicas que utilizo son —dibujo tradicional, ilustración digital, gouache, acuarela, óleo, acrílico y óleo pastel— para crear composiciones expresivas y llenas de detalle.</p>
+                        <p style="margin: 0;">Mi enfoque combina la observación, el color y la emoción para transmitir ideas visuales.</p>
+                        <p style="margin: 0;">Mis obras destacan por su estilo expresivo y narrativo, aportando identidad y personalidad a cada proyecto.</p>
+                      </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" href="#">Galería</a>
+                        <a class="btn btn-ghost" target="_blank" href="galeria.html">Galería</a>
                       </div>
                     </div>
                   </div>
@@ -725,15 +741,19 @@
                 <!-- Panel 4 -->
                 <div id="panel-ux" role="tabpanel" aria-labelledby="tab-ux" hidden>
                   <div class="panel-wrap">
-                    <div class="panel-media" style="background-image:linear-gradient(135deg,#FF8A0033,#3AA0FF22)"></div>
+                    <div class="panel-media" style="background-image:linear-gradient(135deg,#FF8A0033,#3AA0FF22)">
+                      <img src="img/figma.png" alt="ux-ui" class="thumb-img" loading="lazy" decoding="async">
+                    </div>
                     <div class="panel-body">
-                      <h3>UX/UI — Research a prototipos</h3>
-                      <p class="muted">Flujos, wireframes y prototipos navegables con validaciones de usabilidad y handoff claro a dev.</p>
-                      <div class="panel-tags">
-                        <span class="badge">Prototipos</span><span class="badge">Flujos</span>
-                      </div>
+                      <h3>UX/UI design</h3>
+                      <p class="muted">
+                        <p style="margin: 0;">Diseño interfaces centradas en el usuario, priorizando la claridad, accesibilidad y coherencia visual.</p>
+                        <p style="margin: 0;">Creo prototipos interactivos que permiten validar ideas y optimizar la experiencia antes del desarrollo.</p>
+                        <p style="margin: 0;">Combino investigación, arquitectura de información y diseño visual para lograr productos intuitivos y agradables de usar.</p>
+                        <p style="margin: 0;">Mi objetivo es transformar necesidades reales en experiencias digitales funcionales, estéticas y significativas.</p>
+                      </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" href="#">Ver prototipo</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://www.figma.com/@romyrotela">Ver prototipo</a>
                       </div>
                     </div>
                   </div>
@@ -751,9 +771,9 @@
             <div class="grid-2">
               <p>¿Te gustaría trabajar conmigo? Escribime y armamos algo increíble.</p>
               <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
-                <a class="btn btn-primary" href="mailto:tuemail@ejemplo.com">Escríbeme</a>
+                <a class="btn btn-primary" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración." target="_blank" class="btn-whatsapp">Escribíme</a>
                 <a class="btn btn-ghost" href="docs/cv_rominarotela.pdf" aria-label="Ver CV PDF">Ver CV</a>
-                <a class="btn btn-ghost" href="#" aria-label="GitHub">GitHub</a>
+                <a class="btn btn-ghost" href="https://github.com/romyro22" aria-label="GitHub">GitHub</a>
               </div>
             </div>
             <p style="margin-top:18px">© <span id="y"></span> Romy — Hecho con ♥ y mucho café</p>
