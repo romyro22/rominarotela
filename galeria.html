@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Galería de Arte Moderna</title>
+<title>Galería de Arte</title>
 <style>
   :root{
     --bg:#0f1115;
@@ -55,9 +55,10 @@
   main{padding:20px 0 60px}
   .grid{
     display:grid; gap:18px;
-    grid-template-columns: repeat( auto-fit, minmax(480px, 1fr) );
+    grid-template-columns: repeat( auto-fit, minmax(280px, 10fr) );
   }
   .card{
+    cursor: auto;
     background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
     border:1px solid var(--border);
     border-radius:var(--radius);
@@ -65,6 +66,10 @@
     box-shadow:var(--shadow);
     display:flex; flex-direction:column;
     transition: transform .18s ease, box-shadow .18s ease, border-color .25s ease;
+    max-width: 500px;
+  }
+  .card img {
+    cursor: auto;
   }
   .card:hover{transform:translateY(-4px); border-color:rgba(124,92,255,.35)}
   .thumb{
@@ -106,7 +111,7 @@
   }
   dialog::backdrop{background:rgba(0,0,0,.55)}
   .modal{
-    display:grid; grid-template-columns: 1fr 1.1fr; gap:0;
+    display:grid; grid-template-columns: 1fr; gap:0;
   }
   .modal .left{
     padding:0; border-right:1px solid var(--border); background:#0f131e
@@ -145,8 +150,7 @@
     <div class="wrap">
       <div class="topbar">
         <div>
-          <h1>Galería de Arte Moderna</h1>
-          <div class="muted" style="font-size:13px">Obras contemporáneas — catálogo interactivo</div>
+          <h1>Galería de Arte</h1>
         </div>
         <div class="controls">
           <input id="q" class="input" type="search" placeholder="Buscar por nombre, inspiración, técnica, material…" aria-label="Buscar obras" />
@@ -172,40 +176,6 @@
       <div class="left">
         <img id="dlg-img" class="hero" alt="" />
       </div>
-      <div class="right">
-        <span id="dlg-tech-pill" class="pill"></span>
-        <h2 id="dlg-title"></h2>
-        <p id="dlg-desc" class="muted" style="margin-top:-2px"></p>
-
-        <div class="meta">
-          <div class="kv">
-            <div class="k">Inspiración</div>
-            <div class="v" id="dlg-inspiration"></div>
-          </div>
-          <div class="kv">
-            <div class="k">Tamaño</div>
-            <div class="v" id="dlg-size"></div>
-          </div>
-          <div class="kv">
-            <div class="k">Técnica</div>
-            <div class="v" id="dlg-technique"></div>
-          </div>
-          <div class="kv">
-            <div class="k">Materiales</div>
-            <div class="v" id="dlg-materials"></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Descripción</h3>
-          <p id="dlg-longdesc"></p>
-        </div>
-
-        <div class="actions">
-          <button class="btn" onclick="closeModal()">Cerrar</button>
-          <button class="btn primary" id="dlg-copy">Copiar ficha</button>
-        </div>
-      </div>
     </div>
   </dialog>
 
@@ -213,69 +183,85 @@
   // ====== Datos de ejemplo (edita libremente) ======
   const artworks = [
     {
-      id: "orbital-01",
-      name: "Orbital 01",
-      description: "Capas de color orbitando un vacío central.",
-      longDescription:
-        "Composición construida con veladuras finas que crean profundidad. El vacío central sugiere una pausa, un respiro entre ritmos cromáticos.",
-      inspiration: "Silencio entre movimientos de una pieza de jazz.",
-      size: "80 × 100 cm",
-      technique: "Acrílico sobre lienzo",
-      materials: "Acrílicos fluidos, médium, espátulas, barniz satinado",
-      image: svgPlaceholder("Orbital 01", "#7c5cff"),
-      tags: ["geométrico","abstracto"]
+      id: "perla_inu",
+      name: "Perla Inu",
+      description: "Una reinterpretación humorística y moderna del famoso cuadro 'La joven con el arete de perla' de Johannes Vermeer. Es una mezcla entre arte clásico y cultura pop digital.",
+      longDescription: "",
+      inspiration: "",
+      size: "40 × 30 cm",
+      technique: "Óleo sobre lienzo",
+      materials: "",
+      image: "/img/galeria/pintura.png",
+      tags: ["óleo", "contemporáneo"]
     },
     {
-      id: "memoria-urbana",
-      name: "Memoria Urbana",
-      description: "Trama de líneas que evocan cartografías emocionales.",
-      longDescription:
-        "La pieza explora el recuerdo de la ciudad a través de capas de líneas y transparencias, como si el plano se superpusiera a la memoria.",
-      inspiration: "Mapas y recorridos cotidianos.",
-      size: "60 × 90 cm",
-      technique: "Tinta y gouache",
-      materials: "Tinta china, gouache, papel de algodón 300 g",
-      image: svgPlaceholder("Memoria Urbana", "#18c6a3"),
-      tags: ["línea","cartografía"]
+      id: "el_retrato_de_una_culpa_silenciosa",
+      name: "El retrato de una culpa silenciosa",
+      description: "1° Puesto - Ñamombe'u 2024. Obra inspirada en el libro 'Tarde de abril' de Carlos Martini. 'Ciertos pasajes de nuestra vida no se borran nunca y allí adonde vamos están con nosotros'. ",
+      longDescription: "",
+      size: "30 × 30 cm",
+      technique: "Óleo sobre lienzo",
+      materials: "",
+      image: "/img/galeria/oleo.png",
+      tags: ["óleo","monocromático"]
     },
     {
-      id: "cobalto-nocturno",
-      name: "Cobalto Nocturno",
-      description: "Profundidades azules con destellos metálicos.",
-      longDescription:
-        "Pinceladas densas contrastadas con texturas metalizadas que emergen como luces en la noche.",
-      inspiration: "Horizontes urbanos después de la lluvia.",
-      size: "100 × 100 cm",
-      technique: "Óleo y pan de metal",
-      materials: "Óleos, pan de plata, trementina, barniz",
-      image: svgPlaceholder("Cobalto Nocturno", "#2f6df6"),
-      tags: ["nocturno","textura"]
+      id: "la_tristeza_del_guason",
+      name: "La tristeza del Guasón",
+      description: "Este retrato muestra al personaje del Guasón (Joaquin Phoenix), con un enfoque emocional más íntimo. Se enfatiza su tristeza y vulnerabilidad.",
+      longDescription: "",
+      inspiration: "",
+      size: "20 × 20 cm",
+      technique: "Gouache",
+      materials: "",
+      image: "/img/galeria/gouache.png",
+      tags: ["gouache","tinta"]
     },
     {
-      id: "flora-digital",
-      name: "Flora Digital",
-      description: "Botánica imaginaria generativa.",
-      longDescription:
-        "Motivos florales sintetizados en módulos repetitivos, explorando el límite entre natural y algorítmico.",
-      inspiration: "Patrones generativos y herbario clásico.",
-      size: "70 × 70 cm",
-      technique: "Mixta",
-      materials: "Acrílico, aerosol, esténcil, lápiz graso",
-      image: svgPlaceholder("Flora Digital", "#ff6ea9"),
-      tags: ["orgánico","patrón"]
+      id: "la_niña_y_el_gato_negro",
+      name: "La niña y el gato negro",
+      description: "Ilustración de un cuento lleno de magia y una historia por descubrir. Una niña de mirada curiosa y estilo vintage junto a su misterioso gato en un fondo llenos de flores.",
+      longDescription:"",
+      inspiration: "",
+      size: "500 × 400 px",
+      technique: "Ilustración digital",
+      materials: "",
+      image: "/img/galeria/ilustracion.png",
+      tags: ["ilustración","digital"]
     },
     {
-      id: "arena-y-tiempo",
-      name: "Arena y Tiempo",
-      description: "Estratos que sugieren erosión y memoria.",
-      longDescription:
-        "Raspados y veladuras sucesivas dejan ver capas antiguas como un corte geológico cargado de historia.",
-      inspiration: "Acantilados y capas sedimentarias.",
-      size: "120 × 80 cm",
-      technique: "Acrílico y collage",
-      materials: "Acrílico, papel artesanal, médiums de textura",
-      image: svgPlaceholder("Arena y Tiempo", "#f6a22f"),
-      tags: ["materia","estratos"]
+      id: "pedro_pedro_pedro",
+      name: "Pedro, Pedro, Pedro",
+      description: "Historieta del Mapache Pedro. Ilustración digital del mapache que camina entre la vegetación del bosque, rodeado de hojas verdes y sombras naturales.",
+      longDescription:"",
+      size: "500 × 300 px",
+      technique: "Ilustración digital",
+      materials: "",
+      image: "/img/galeria/ilustración.png",
+      tags: ["ilustración","digital"]
+    },
+    {
+      id: "las_aventuras_de_capi_y_pajarito",
+      name: "Las aventuras de Capi y Pajarito",
+      description: "Ilustración digital en pixelart para un juego educativo de programación. Los personajes principales, Capi y Pajarito en medio de la naturaleza de Paraguay.",
+      longDescription:"",
+      inspiration: "",
+      size: "500 × 400 px",
+      technique: "Pixelart",
+      materials: "",
+      image: "/img/galeria/pixelart.png",
+      tags: ["ilustración","digital","pixelart"]
+    },
+    {
+      id: "madre_e_hijo",
+      name: "Madre e hijo",
+      description: "Dibujo tradicional hecho a mano alazada inspirada en una fotografía real, donde las líneas de lápiz y grafito reinterpretan la calidez del momento compartido entre madre e hijo.",
+      longDescription: "",
+      size: "21 × 35 cm",
+      technique: "Dibujo tradicional",
+      materials: "",
+      image: "/img/galeria/dibujo.png",
+      tags: ["dibujo","tradicional"]
     }
   ];
 
@@ -325,8 +311,6 @@
           </div>
         </div>
         <div class="footer">
-          <button class="btn" data-id="${a.id}" aria-label="Detalles de ${escapeHtml(a.name)}">Ficha</button>
-          <button class="btn primary" data-id="${a.id}" aria-label="Abrir ${escapeHtml(a.name)}">Ver</button>
         </div>
       `;
       // Acciones
