@@ -75,10 +75,11 @@
     .btn:hover{transform:translateY(-2px)}
     .portrait{
       background:linear-gradient(145deg,#2F1775,#1A0C3A);
-      border:1px solid #ffffff12;border-radius:24px;padding:18px;box-shadow:var(--shadow)
+      border:1px solid #ffffff12;border-radius:24px;padding:18px;box-shadow:var(--shadow);
+      max-width: 50vw;
     }
     .portrait-inner{
-      aspect-ratio:4/5;overflow:hidden;border-radius:16px;
+      aspect-ratio:1;overflow:hidden;border-radius:16px;
       background:#0f0f20 url("img/portrait.png") center/cover no-repeat;
     }
     
@@ -254,9 +255,10 @@
         .grid-4{grid-template-columns:repeat(2,1fr)}
         .grid-3{grid-template-columns:1fr 1fr}
       }
-      @media (max-width: 640px){
+      @media (max-width: 1000px){
         .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
         .skill{grid-template-columns:1fr}
+        .pill{font-size: 1.1rem;}
       }
     </style>
   </head>
@@ -289,7 +291,7 @@
             </div>
           </div>
           <div class="portrait">
-            <div class="portrait-inner"><!-- Reemplazar bg con tu foto en assets/profile.jpg --></div>
+            <div class="portrait-inner"></div>
           </div>
         </div>
       </section>
