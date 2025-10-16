@@ -182,7 +182,9 @@
     }
 
     .btn-ghost {
-      background: #ffffff12
+      background: #ffffff12;
+      display: flex;
+      justify-content: center;
     }
 
     .btn:hover {
@@ -531,16 +533,47 @@
 
 
     html {
-      font-size: clamp(18px, 2.5vw, 21px);
+      font-size: clamp(16px, 2.5vw, 18px);
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1100px) {
       h1 {
         font-size: clamp(20px, 5vw, 28px);
       }
 
       p {
         font-size: clamp(18px, 2.5vw, 21px);
+      }
+
+      strong {
+        font-size: clamp(18px, 2.5vw, 21px);
+      }
+
+      span {
+        font-size: clamp(18px, 2.5vw, 21px) !important;
+      }
+
+      .btn-ghost {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero-wrap {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        display: grid;
+        place-items: center;
+        height: 100vh;
+      }
+
+      .portrait {
+        height: auto;
+        width: 100%;
+      }
+
+      .cta {
+        display: flex;
+        justify-content: center;
       }
     }
 
