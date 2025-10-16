@@ -50,6 +50,23 @@
       background:linear-gradient(90deg,var(--accent-magenta),var(--accent-orange));
       font-weight:700;box-shadow:var(--shadow);
     }
+
+    /* Language Switcher */
+    .lang-switcher{
+      display:flex;gap:4px;background:#ffffff12;border-radius:999px;padding:4px;
+    }
+    .lang-btn{
+      padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:600;
+      cursor:pointer;border:none;background:transparent;color:var(--text);
+      transition:all .2s ease;
+    }
+    .lang-btn.active{
+      background:linear-gradient(90deg,var(--accent-magenta),var(--accent-orange));
+      box-shadow:0 4px 12px rgba(255,60,142,.3);
+    }
+    .lang-btn:hover:not(.active){
+      background:#ffffff18;
+    }
     
     /* Hero */
     .hero{
@@ -270,8 +287,12 @@
           <img src="img/logomrri.png" alt="romy.dev" class="thumb-img" loading="lazy" decoding="async" style="width: 150px;">
         </div>
         <nav style="display:flex;gap:12px;align-items:center">
-          <span class="chip">Tecnología + Arte</span>
-          <a class="btn btn" target="_blank" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración.">Contacto</a>
+          <span class="chip" data-i18n="header.tagline">Tecnología + Arte</span>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="es" aria-label="Cambiar a Español">ES</button>
+            <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
+          </div>
+          <a class="btn btn" target="_blank" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración." data-i18n="header.contact">Contacto</a>
         </nav>
       </div>
     </header>
@@ -282,12 +303,12 @@
       <section class="hero">
         <div class="container hero-wrap">
           <div>
-            <span class="tag">Hola! Soy</span>
-            <h1>Romina Rotela <span>— Desarrolladora Frontend</span></h1>
-            <p class="subtitle">Moderna, creativa y orientada a producto. Construyo interfaces rápidas, accesibles y hermosas con HTML/CSS/JS, React y Django/Wagtail.</p>
+            <span class="tag" data-i18n="hero.greeting">Hola! Soy</span>
+            <h1>Romina Rotela <span data-i18n="hero.title">— Desarrolladora Frontend</span></h1>
+            <p class="subtitle" data-i18n="hero.subtitle">Moderna, creativa y orientada a producto. Construyo interfaces rápidas, accesibles y hermosas con HTML/CSS/JS, React y Django/Wagtail.</p>
             <div class="cta">
-              <a class="btn btn-primary" href="#proyectos">Ver proyectos</a>
-              <a class="btn btn-ghost" href="#habilidades">Habilidades</a>
+              <a class="btn btn-primary" href="#proyectos" data-i18n="hero.viewProjects">Ver proyectos</a>
+              <a class="btn btn-ghost" href="#habilidades" data-i18n="hero.skills">Habilidades</a>
             </div>
           </div>
           <div class="portrait">
@@ -299,7 +320,7 @@
       <!-- EDUCACIÓN / EXPERIENCIA -->
       <section id="trayectoria">
         <div class="container">
-          <h2 class="sect-title"><span class="accent-dot"></span>Desarrollo Profesional</h2>
+          <h2 class="sect-title"><span class="accent-dot"></span><span data-i18n="development.title">Desarrollo Profesional</span></h2>
           <div class="grid-2">
             <div class="card tile">
               <div class="icon" aria-hidden="true">
@@ -310,32 +331,32 @@
                 </svg>
               </div>
               <div>
-                <h3>Educación</h3>
-                <p>■ Estudios Primarios y Secundarios - Colegio Villa San Francisco</p>
-                <p>■ Ingeniería Informática - Universidad Nacional de Asunción / Facultad Politécnica (Tesis en proceso).</p>
+                <h3 data-i18n="development.education.title">Educación</h3>
+                <p data-i18n="development.education.item1">■ Estudios Primarios y Secundarios - Colegio Villa San Francisco</p>
+                <p data-i18n="development.education.item2">■ Ingeniería Informática - Universidad Nacional de Asunción / Facultad Politécnica (Tesis en proceso).</p>
               </div>
             </div>
-            
+
             <div class="card tile">
               <div class="icon" aria-hidden="true">
                 <!-- briefcase icon -->
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <title>Idiomas</title>
+                  <title data-i18n="development.languages.svgTitle">Idiomas</title>
                   <circle cx="12" cy="10" r="6" stroke="var(--accent-blue)" stroke-width="2"/>
                   <path d="M12 4v12" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round"/>
                   <path d="M6 10h12" stroke="var(--accent-orange)" stroke-width="2" stroke-linecap="round"/>
                   <path d="M7 6.6c2 1.4 6 1.4 10 0" stroke="var(--accent-magenta)" stroke-width="2" stroke-linecap="round"/>
                   <path d="M7 13.4c2-1.4 6-1.4 10 0" stroke="var(--accent-magenta)" stroke-width="2" stroke-linecap="round" opacity=".8"/>
                 </svg>
-                
+
               </div>
               <div>
-                <h3>Idiomas</h3>
-                <p>■ Español: Nativo. </p>
-                <p>■ Guaraní: Básico. </p>
-                <p>■ Inglés: Intermedio Técnico. </p>
-                <p>■ Portugués: Básico. </p>
-                <p>■ Francés: Básico. </p>
+                <h3 data-i18n="development.languages.title">Idiomas</h3>
+                <p data-i18n="development.languages.spanish">■ Español: Nativo. </p>
+                <p data-i18n="development.languages.guarani">■ Guaraní: Básico. </p>
+                <p data-i18n="development.languages.english">■ Inglés: Intermedio Técnico. </p>
+                <p data-i18n="development.languages.portuguese">■ Portugués: Básico. </p>
+                <p data-i18n="development.languages.french">■ Francés: Básico. </p>
               </div>
             </div>
             
@@ -343,43 +364,43 @@
               <div class="icon" aria-hidden="true">
                 <!-- briefcase icon -->
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <title>Habilidades técnicas</title>
+                  <title data-i18n="development.techSkills.svgTitle">Habilidades técnicas</title>
                   <path d="M9 16L5 12l4-4" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M15 8l4 4-4 4" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M13 7l-2 10" stroke="var(--accent-magenta)" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                
+
               </div>
               <div>
-                <h3>Habilidades Técnicas</h3>
-                <p>■ Lenguajes: Python, JavaScript, HTML5, CSS3, SQL. </p>
-                <p>■ Frameworks: Django, Wagtail, React, jQuery. </p>
-                <p>■ Bases de datos: PostgreSQL, MySQL. </p>
-                <p>■ Herramientas: Git, GitLab, GitHub, Figma, Docker. </p>
-                <p>■ Metodologías: Scrum, Agile. </p>
-                <p>■ Otros: Seguridad informática, integración de APIs, pruebas y despliegue.</p>
+                <h3 data-i18n="development.techSkills.title">Habilidades Técnicas</h3>
+                <p data-i18n="development.techSkills.languages">■ Lenguajes: Python, JavaScript, HTML5, CSS3, SQL. </p>
+                <p data-i18n="development.techSkills.frameworks">■ Frameworks: Django, Wagtail, React, jQuery. </p>
+                <p data-i18n="development.techSkills.databases">■ Bases de datos: PostgreSQL, MySQL. </p>
+                <p data-i18n="development.techSkills.tools">■ Herramientas: Git, GitLab, GitHub, Figma, Docker. </p>
+                <p data-i18n="development.techSkills.methodologies">■ Metodologías: Scrum, Agile. </p>
+                <p data-i18n="development.techSkills.other">■ Otros: Seguridad informática, integración de APIs, pruebas y despliegue.</p>
               </div>
             </div>
-            
+
             <div class="card tile">
               <div class="icon" aria-hidden="true">
                 <!-- briefcase icon -->
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <title>Cursos y Especializaciones</title>
+                  <title data-i18n="development.courses.svgTitle">Cursos y Especializaciones</title>
                   <rect x="3" y="5" width="12" height="6" rx="1" stroke="var(--accent-teal)" stroke-width="2" />
                   <rect x="5" y="11" width="14" height="6" rx="1" stroke="var(--accent-yellow)" stroke-width="2" />
                   <path d="M9 5v4l2-1 2 1V5" stroke="var(--accent-magenta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                
+
               </div>
               <div>
-                <h3>Cursos y Especializaciones</h3>
-                <p>■ Informática – Colegio Villa San Francisco: Editores de imágenes (Adobe Photoshop) - Graficadores Vectoriales (Corel Draw) - Editores de Video (Adobe Premiere Pro) </p>
-                <p>■ Técnico de computadoras – Centro de Especialización Profesional y Extensión Universitaria (CEPEU) </p>
-                <p>■ NDG Linux Unhatched – Curso online ofrecido por Network Development Group </p>
-                <p>■ CCNA Cisco Certified Network Associate –  CCNA I – Introduction to Networks </p>
-                <p>■ React y React Native CLI (actualmente cursando)  – Modalidad virtual </p>
-                <p>■ Generative Adversarial Networks and Stable Diffusion (actualmente cursando)  – Modalidad virtual</p>
+                <h3 data-i18n="development.courses.title">Cursos y Especializaciones</h3>
+                <p data-i18n="development.courses.item1">■ Informática – Colegio Villa San Francisco: Editores de imágenes (Adobe Photoshop) - Graficadores Vectoriales (Corel Draw) - Editores de Video (Adobe Premiere Pro) </p>
+                <p data-i18n="development.courses.item2">■ Técnico de computadoras – Centro de Especialización Profesional y Extensión Universitaria (CEPEU) </p>
+                <p data-i18n="development.courses.item3">■ NDG Linux Unhatched – Curso online ofrecido por Network Development Group </p>
+                <p data-i18n="development.courses.item4">■ CCNA Cisco Certified Network Associate –  CCNA I – Introduction to Networks </p>
+                <p data-i18n="development.courses.item5">■ React y React Native CLI (actualmente cursando)  – Modalidad virtual </p>
+                <p data-i18n="development.courses.item6">■ Generative Adversarial Networks and Stable Diffusion (actualmente cursando)  – Modalidad virtual</p>
               </div>
             </div>
             
@@ -387,25 +408,25 @@
               <div class="icon" aria-hidden="true">
                 <!-- briefcase icon -->
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <title>Certificados obtenidos</title>
+                  <title data-i18n="development.certificates.svgTitle">Certificados obtenidos</title>
                   <circle cx="12" cy="8" r="4" stroke="var(--accent-yellow)" stroke-width="2"/>
                   <path d="M10.3 8l1.3 1.3 2-2" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M10 12l-2 4 3-1 1 2" stroke="var(--accent-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M14 12l2 4-3-1-1 2" stroke="var(--accent-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                
+
               </div>
               <div>
-                <h3>Certificados obtenidos</h3>
-                <p>■ “Relaciones Humanas y P.N.L como factor de éxito Empresarial” – Consulting Group </p>
-                <p>■ “Trabajo Efectivo de equipos en las organizaciones” – Consulting Group </p>
-                <p>■ “Encuentro de Desarrolladores y Usuarios” – ABC color </p>
-                <p>■ “Introducción a la Minería de Datos” – UNA, San Lorenzo </p>
-                <p>■ “Seminario Internacional de Ciberseguridad” – KavaCon </p>
-                <p>■ “Programa de pre - incubación TRIBU” – Emprendimiento E-VAL </p>
-                <p>■ “Conferencias sobre Pensamiento Computacional, Ciudadanía Digital y Habilidades Socioemocionales – Meta Innova: Primer seminario internacional de innovación educativa realizado en Paraguay </p> 
-                <p>■ “Concurso de diseño y creación visual - Ñamombe’u” - primer puesto </p>
-                
+                <h3 data-i18n="development.certificates.title">Certificados obtenidos</h3>
+                <p data-i18n="development.certificates.item1">■ "Relaciones Humanas y P.N.L como factor de éxito Empresarial" – Consulting Group </p>
+                <p data-i18n="development.certificates.item2">■ "Trabajo Efectivo de equipos en las organizaciones" – Consulting Group </p>
+                <p data-i18n="development.certificates.item3">■ "Encuentro de Desarrolladores y Usuarios" – ABC color </p>
+                <p data-i18n="development.certificates.item4">■ "Introducción a la Minería de Datos" – UNA, San Lorenzo </p>
+                <p data-i18n="development.certificates.item5">■ "Seminario Internacional de Ciberseguridad" – KavaCon </p>
+                <p data-i18n="development.certificates.item6">■ "Programa de pre - incubación TRIBU" – Emprendimiento E-VAL </p>
+                <p data-i18n="development.certificates.item7">■ "Conferencias sobre Pensamiento Computacional, Ciudadanía Digital y Habilidades Socioemocionales – Meta Innova: Primer seminario internacional de innovación educativa realizado en Paraguay </p>
+                <p data-i18n="development.certificates.item8">■ "Concurso de diseño y creación visual - Ñamombe'u" - primer puesto </p>
+
                 <!--<p class="badge" style="margin-top: 10px;">HTML • CSS • JS • jQuery • Django • Python • SQL</p>-->
               </div>
             </div>
@@ -418,38 +439,38 @@
       <section>
         <div class="container">
           <h2 class="sect-title">
-            <span class="accent-dot" style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"></span>Experiencia Laboral</h2>
+            <span class="accent-dot" style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"></span><span data-i18n="experience.title">Experiencia Laboral</span></h2>
             <div class="row">
               <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
                 <div>
-                  <p style="font-weight: bold;color: var(--accent-yellow);">(2010 - 2017) Soporte Técnico y Asistente Administrativo (AECID, CNLtrading, Mando) </p>
-                  <p><span>• Mantenimiento preventivo de hardware y software. </span></p>
-                  <p><span>• Atención al cliente y gestión de incidencias. </span></p>
+                  <p style="font-weight: bold;color: var(--accent-yellow);" data-i18n="experience.job1.title">(2010 - 2017) Soporte Técnico y Asistente Administrativo (AECID, CNLtrading, Mando) </p>
+                  <p><span data-i18n="experience.job1.task1">• Mantenimiento preventivo de hardware y software. </span></p>
+                  <p><span data-i18n="experience.job1.task2">• Atención al cliente y gestión de incidencias. </span></p>
                 </div>
               </div>
               <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
                 <div>
-                  <p style="font-weight: bold;color: var(--accent-yellow);">(2017 - 2019) Asistente Técnico / Administrativo (Mando Paraguay) </p>
-                  <p><span>• Instalación y mantenimiento de equipos. </span></p>
-                  <p><span>• Gestión administrativa y soporte a clientes.</span></p>
+                  <p style="font-weight: bold;color: var(--accent-yellow);" data-i18n="experience.job2.title">(2017 - 2019) Asistente Técnico / Administrativo (Mando Paraguay) </p>
+                  <p><span data-i18n="experience.job2.task1">• Instalación y mantenimiento de equipos. </span></p>
+                  <p><span data-i18n="experience.job2.task2">• Gestión administrativa y soporte a clientes.</span></p>
                 </div>
               </div>
               <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
                 <div>
-                  <p style="font-weight: bold;color: var(--accent-yellow);">(2019 - 2021) Desarrolladora Web – Definetec </p>
-                  <p><span>• Desarrollo del ERP Odoo y facturación digital. </span></p>
-                  <p><span>• Desarrollo Frontend y Backend con Python, Django, JavaScript, jQuery, HTML, CSS.</span></p>
-                  <p><span>• Uso de Git, GitHub, Bitbucket.</span></p>
+                  <p style="font-weight: bold;color: var(--accent-yellow);" data-i18n="experience.job3.title">(2019 - 2021) Desarrolladora Web – Definetec </p>
+                  <p><span data-i18n="experience.job3.task1">• Desarrollo del ERP Odoo y facturación digital. </span></p>
+                  <p><span data-i18n="experience.job3.task2">• Desarrollo Frontend y Backend con Python, Django, JavaScript, jQuery, HTML, CSS.</span></p>
+                  <p><span data-i18n="experience.job3.task3">• Uso de Git, GitHub, Bitbucket.</span></p>
                 </div>
               </div>
               <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
                 <div>
-                  <p style="font-weight: bold;color: var(--accent-yellow);">(2021 - Actualidad) Desarrolladora Web – Paraguay Educa / Portal META </p>
-                  <p><span>• Desarrollo de aplicaciones web educativas con Python, Django, Wagtail y Moodle.  </span></p>
-                  <p><span>• Integración de APIs y despliegue de sistemas escalables en PostgreSQL.</span></p>
-                  <p><span>• Uso de metodologías ágiles (Scrum, Taiga) y control de versiones con GitLab.</span></p>
-                  <p><span>• Diseño de interfaces con Figma.</span></p>
-                  <p><span>• Desarrollo e implementación de juegos educativos, herramientas con IA y web.</span></p>
+                  <p style="font-weight: bold;color: var(--accent-yellow);" data-i18n="experience.job4.title">(2021 - Actualidad) Desarrolladora Web – Paraguay Educa / Portal META </p>
+                  <p><span data-i18n="experience.job4.task1">• Desarrollo de aplicaciones web educativas con Python, Django, Wagtail y Moodle.  </span></p>
+                  <p><span data-i18n="experience.job4.task2">• Integración de APIs y despliegue de sistemas escalables en PostgreSQL.</span></p>
+                  <p><span data-i18n="experience.job4.task3">• Uso de metodologías ágiles (Scrum, Taiga) y control de versiones con GitLab.</span></p>
+                  <p><span data-i18n="experience.job4.task4">• Diseño de interfaces con Figma.</span></p>
+                  <p><span data-i18n="experience.job4.task5">• Desarrollo e implementación de juegos educativos, herramientas con IA y web.</span></p>
                 </div>
               </div>
             </div>
@@ -491,16 +512,16 @@
         
         <section>
           <div class="container">
-            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"></span> Habilidades blandas y duras</h2>
+            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"></span><span data-i18n="skills.title"> Habilidades blandas y duras</span></h2>
             <div class="card" style="display:grid;gap:16px">
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
-                <span class="pill">Capacidad de organización y planificación</span>
-                <span class="pill">Liderazgo</span>
-                <span class="pill">Comunicación efectiva</span>
-                <span class="pill">Capacidad de resolución de problemas</span>
-                <span class="pill">Pensamiento crítico</span>
-                <span class="pill">Adaptabilidad</span>
-                <span class="pill">Gestión del tiempo</span>
+                <span class="pill" data-i18n="skills.organization">Capacidad de organización y planificación</span>
+                <span class="pill" data-i18n="skills.leadership">Liderazgo</span>
+                <span class="pill" data-i18n="skills.communication">Comunicación efectiva</span>
+                <span class="pill" data-i18n="skills.problemSolving">Capacidad de resolución de problemas</span>
+                <span class="pill" data-i18n="skills.criticalThinking">Pensamiento crítico</span>
+                <span class="pill" data-i18n="skills.adaptability">Adaptabilidad</span>
+                <span class="pill" data-i18n="skills.timeManagement">Gestión del tiempo</span>
               </div>
             </div>
           </div>
@@ -510,9 +531,9 @@
         <div id="proyectos" style="padding: 14px 0;"></div>
         <section>
           <div class="container">
-            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-magenta);box-shadow:0 0 0 6px #FF3C8E30"></span> Proyectos laborales</h2>
+            <h2 class="sect-title"><span class="accent-dot" style="background:var(--accent-magenta);box-shadow:0 0 0 6px #FF3C8E30"></span><span data-i18n="workProjects.title"> Proyectos laborales</span></h2>
             <div class="grid-3">
-              
+
               <article class="card project">
                 <div class="thumb">
                   <img src="img/portalmeta.png"
@@ -520,15 +541,15 @@
                   class="thumb-img"
                   loading="lazy" decoding="async">
                 </div>
-                
+
                 <div style="display:flex;gap:8px;flex-wrap:wrap">
                   <span class="badge">Django</span><span class="badge">Wagtail</span><span class="badge">UX/UI</span><span class="badge">IA</span>
                 </div>
-                <h4>Portal META — Web site</h4>
-                <p class="muted">Desarrollo del Portal META con Django y Wagtail, integrando Moodle y otras plataformas educativas. Implementé bloques y páginas personalizadas para productos, simulaciones y recursos interactivos. Me enfoqué en la arquitectura, el diseño visual y la experiencia de usuario para garantizar un entorno educativo digital sólido y atractivo.</p>
-                <a class="btn btn-ghost" href="https://www.portalmeta.org.py/">Ver más</a>
+                <h4 data-i18n="workProjects.meta.title">Portal META — Web site</h4>
+                <p class="muted" data-i18n="workProjects.meta.description">Desarrollo del Portal META con Django y Wagtail, integrando Moodle y otras plataformas educativas. Implementé bloques y páginas personalizadas para productos, simulaciones y recursos interactivos. Me enfoqué en la arquitectura, el diseño visual y la experiencia de usuario para garantizar un entorno educativo digital sólido y atractivo.</p>
+                <a class="btn btn-ghost" href="https://www.portalmeta.org.py/" data-i18n="workProjects.viewMore">Ver más</a>
               </article>
-              
+
               <article class="card project">
                 <div class="thumb"><img src="img/paraguayeduca.png"
                   alt="Portal META — Landing y bloques Wagtail"
@@ -537,11 +558,11 @@
                   <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span class="badge">Django</span><span class="badge">Wagtail</span><span class="badge">HTML/CSS</span><span class="badge">JS</span>
                   </div>
-                  <h4>Paraguay Educa — Web site</h4>
-                  <p class="muted">Desarrollo de la página web de Paraguay Educa con Django y Wagtail, personalizando su arquitectura y módulos. Implementé funcionalidades interactivas para mejorar la experiencia. Adapté el diseño visual y los bloques dinámicos a la identidad institucional, asegurando usabilidad y consistencia.</p>
-                  <a class="btn btn-ghost" href="https://paraguayeduca.org/pages/paraguay-educa/index/">Ver más</a>
+                  <h4 data-i18n="workProjects.educa.title">Paraguay Educa — Web site</h4>
+                  <p class="muted" data-i18n="workProjects.educa.description">Desarrollo de la página web de Paraguay Educa con Django y Wagtail, personalizando su arquitectura y módulos. Implementé funcionalidades interactivas para mejorar la experiencia. Adapté el diseño visual y los bloques dinámicos a la identidad institucional, asegurando usabilidad y consistencia.</p>
+                  <a class="btn btn-ghost" href="https://paraguayeduca.org/pages/paraguay-educa/index/" data-i18n="workProjects.viewMore">Ver más</a>
                 </article>
-                
+
                 <article class="card project">
                   <div class="thumb"><img src="img/capiypajarito.png"
                     alt="Las aventuras de Capi y Pajarito"
@@ -551,11 +572,11 @@
                   <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span class="badge">Blockly</span><span class="badge">HTML/CSS</span><span class="badge">UX/UI</span><span class="badge">PixelArt</span>
                   </div>
-                  <h4>Las aventuras de Capi y Pajarito — Juego educativo</h4>
-                  <p class="muted">Elaboración del juego educativo utilizando blockly y js, creando la dinámica interactiva de aprendizaje. Diseño integro de los personajes, desde sus características y personalidades hasta su ilustración final. El resultado fue una experiencia única que combina tecnología, narrativa y diseño visual para motivar a los niños a aprender programación jugando.</p>
-                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/blockly/programming_game/">Ver más</a>
+                  <h4 data-i18n="workProjects.capi.title">Las aventuras de Capi y Pajarito — Juego educativo</h4>
+                  <p class="muted" data-i18n="workProjects.capi.description">Elaboración del juego educativo utilizando blockly y js, creando la dinámica interactiva de aprendizaje. Diseño integro de los personajes, desde sus características y personalidades hasta su ilustración final. El resultado fue una experiencia única que combina tecnología, narrativa y diseño visual para motivar a los niños a aprender programación jugando.</p>
+                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/blockly/programming_game/" data-i18n="workProjects.viewMore">Ver más</a>
                 </article>
-                
+
                 <article class="card project">
                   <div class="thumb"><img src="img/metamatic.png"
                     alt="Portal META — Landing y bloques Wagtail"
@@ -565,11 +586,11 @@
                   <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span class="badge">HTML/CCS</span><span class="badge">JS</span><span class="badge">jQuery</span>
                   </div>
-                  <h4>Metamatic — Juego educativo</h4>
-                  <p class="muted">Creación de una plataforma de juegos matemáticos integrados al Portal META. Implementación de un tablero interactivo adaptados a distintos niveles escolares. El enfoque fue la usabilidad y el diseño educativo para que los estudiantes practiquen matemáticas de forma dinámica y motivadora.</p>
-                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/infopages/math_game/">Ver más</a>
+                  <h4 data-i18n="workProjects.metamatic.title">Metamatic — Juego educativo</h4>
+                  <p class="muted" data-i18n="workProjects.metamatic.description">Creación de una plataforma de juegos matemáticos integrados al Portal META. Implementación de un tablero interactivo adaptados a distintos niveles escolares. El enfoque fue la usabilidad y el diseño educativo para que los estudiantes practiquen matemáticas de forma dinámica y motivadora.</p>
+                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/infopages/math_game/" data-i18n="workProjects.viewMore">Ver más</a>
                 </article>
-                
+
                 <article class="card project">
                   <div class="thumb"><img src="img/herramientasIA.png"
                     alt="Portal META — Landing y bloques Wagtail"
@@ -579,11 +600,11 @@
                   <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span class="badge">IA</span><span class="badge">UX/UI</span><span class="badge">HTML/CSS</span><span class="badge">JS</span>
                   </div>
-                  <h4>Herramientas con IA</h4>
-                  <p class="muted">Programación de herramientas educativas con IA integradas al Portal META, un compañero de escritura que asiste en redacción, trivias generadas automáticamente y chats interactivos con figuras históricas. Estas soluciones combinan innovación tecnológica con experiencias educativas inmersivas.</p>
-                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/base/submenu/Inteligencia%20Artificial/">Ver más</a>
+                  <h4 data-i18n="workProjects.ia.title">Herramientas con IA</h4>
+                  <p class="muted" data-i18n="workProjects.ia.description">Programación de herramientas educativas con IA integradas al Portal META, un compañero de escritura que asiste en redacción, trivias generadas automáticamente y chats interactivos con figuras históricas. Estas soluciones combinan innovación tecnológica con experiencias educativas inmersivas.</p>
+                  <a class="btn btn-ghost" href="https://www.portalmeta.org.py/base/submenu/Inteligencia%20Artificial/" data-i18n="workProjects.viewMore">Ver más</a>
                 </article>
-                
+
                 <article class="card project">
                   <div class="thumb"><img src="img/pyensa.png"
                     alt="Portal META — Landing y bloques Wagtail"
@@ -593,9 +614,9 @@
                   <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span class="badge">Branding</span><span class="badge">UI</span><span class="badge">HTML/CSS</span>
                   </div>
-                  <h4>PYensa</h4>
-                  <p class="muted">Desarrollo de una página web para "PYensa" como catálogo digital de productos educativos, integrando Django y Wagtail. Implementé páginas dinámicas con filtros, buscadores y bloques personalizados para mostrar kits y materiales de aprendizaje. Adapté el diseño visual a la identidad de la marca, priorizando claridad, atractivo y usabilidad.</p>
-                  <a class="btn btn-ghost" href="https://paraguayeduca.org/pages/productos-pyensa/pyeduca-techbox/">Ver más</a>
+                  <h4 data-i18n="workProjects.pyensa.title">PYensa</h4>
+                  <p class="muted" data-i18n="workProjects.pyensa.description">Desarrollo de una página web para "PYensa" como catálogo digital de productos educativos, integrando Django y Wagtail. Implementé páginas dinámicas con filtros, buscadores y bloques personalizados para mostrar kits y materiales de aprendizaje. Adapté el diseño visual a la identidad de la marca, priorizando claridad, atractivo y usabilidad.</p>
+                  <a class="btn btn-ghost" href="https://paraguayeduca.org/pages/productos-pyensa/pyeduca-techbox/" data-i18n="workProjects.viewMore">Ver más</a>
                 </article>
               </div>
             </div>
@@ -606,9 +627,9 @@
             <div class="container">
               <h2 class="sect-title">
                 <span class="accent-dot" style="background:var(--accent-orange);box-shadow:0 0 0 6px #FF8A0030"></span>
-                Proyectos personales
+                <span data-i18n="personalProjects.title">Proyectos personales</span>
               </h2>
-              
+
               <!-- TAB LIST: cards -->
               <div class="tabs" role="tablist" aria-label="Proyectos destacados">
                 <!-- Tab 1 -->
@@ -622,10 +643,10 @@
                     </svg>
                   </div>
                   <div class="tab-texts">
-                    <strong>Emprendimientos</strong>
+                    <strong data-i18n="personalProjects.ventures.tab">Emprendimientos</strong>
                   </div>
                 </button>
-                
+
                 <!-- Tab 2 -->
                 <button class="tab-card card" role="tab" aria-selected="false" aria-controls="panel-dev" id="tab-dev">
                   <div class="icon" style="background:#22C6C622">
@@ -636,10 +657,10 @@
                     </svg>
                   </div>
                   <div class="tab-texts">
-                    <strong>Desarrollo web</strong>
+                    <strong data-i18n="personalProjects.dev.tab">Desarrollo web</strong>
                   </div>
                 </button>
-                
+
                 <!-- Tab 3 -->
                 <button class="tab-card card" role="tab" aria-selected="false" aria-controls="panel-illustration" id="tab-illustration">
                   <div class="icon" style="background:#FFD24D22">
@@ -652,10 +673,10 @@
                     </svg>
                   </div>
                   <div class="tab-texts">
-                    <strong>Ilustración</strong>
+                    <strong data-i18n="personalProjects.illustration.tab">Ilustración</strong>
                   </div>
                 </button>
-                
+
                 <!-- Tab 4 -->
                 <button class="tab-card card" role="tab" aria-selected="false" aria-controls="panel-ux" id="tab-ux">
                   <div class="icon" style="background:#FF8A0022">
@@ -666,7 +687,7 @@
                     </svg>
                   </div>
                   <div class="tab-texts">
-                    <strong>UX/UI design</strong>
+                    <strong data-i18n="personalProjects.ux.tab">UX/UI design</strong>
                   </div>
                 </button>
               </div>
@@ -680,12 +701,12 @@
                       <img src="img/emprendimientos.png" alt="Emprendimientos" class="thumb-img" loading="lazy" decoding="async">
                     </div>
                     <div class="panel-body">
-                      <h3>Emprendimientos</h3>
+                      <h3 data-i18n="personalProjects.ventures.title">Emprendimientos</h3>
                       <p class="muted">
-                        <p style="margin: 0;">Combino mi perfil creativo para impulsar proyectos propios que reflejan mi visión integral del arte y el diseño. </p>
-                        <p style="margin: 0;">Fundé <strong><i>Rotiba</i></strong>, un emprendimiento dedicado a la creación de regalos únicos que conectan con la emoción y la identidad de cada persona. </p>
-                        <p style="margin: 0;">Además, <strong><i>Creaciones Romy Rotela</i></strong>, donde desarrollo obras originales en óleo, acrílico, gouache, acuarela y técnicas digitales. </p>
-                        <p style="margin: 0;">Ambos proyectos me permiten unir arte, innovación y gestión, consolidando una marca personal basada en la autenticidad, la estética y el valor artesanal.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ventures.p1">Combino mi perfil creativo para impulsar proyectos propios que reflejan mi visión integral del arte y el diseño. </p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ventures.p2">Fundé <strong><i>Rotiba</i></strong>, un emprendimiento dedicado a la creación de regalos únicos que conectan con la emoción y la identidad de cada persona. </p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ventures.p3">Además, <strong><i>Creaciones Romy Rotela</i></strong>, donde desarrollo obras originales en óleo, acrílico, gouache, acuarela y técnicas digitales. </p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ventures.p4">Ambos proyectos me permiten unir arte, innovación y gestión, consolidando una marca personal basada en la autenticidad, la estética y el valor artesanal.</p>
                       </p>
                       <!--<div class="panel-tags">
                         <span class="badge">Grid</span><span class="badge">Design tokens</span><span class="badge">Accesibilidad</span>
@@ -697,7 +718,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Panel 2 -->
                 <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
                   <div class="panel-wrap">
@@ -705,20 +726,20 @@
                       <img src="img/programacion.png" alt="Programación" class="thumb-img" loading="lazy" decoding="async">
                     </div>
                     <div class="panel-body">
-                      <h3>Desarrollo web</h3>
+                      <h3 data-i18n="personalProjects.dev.title">Desarrollo web</h3>
                       <p class="muted">
-                        <p style="margin: 0;">Desarrollo soluciones web completas, desde el diseño del frontend hasta la lógica del backend.</p>
-                        <p style="margin: 0;">Utilizo HTML, CSS, JavaScript y React para crear interfaces dinámicas y modernas, mientras que con Node.js implemento estructuras escalables y eficientes.</p>
-                        <p style="margin: 0;">También trabajo con bases de datos relacionales y no relacionales, garantizando un flujo de información seguro y optimizado.</p>
-                        <p style="margin: 0;">Mi objetivo es transformar ideas en productos digitales funcionales, estéticos y orientados a la experiencia del usuario.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.dev.p1">Desarrollo soluciones web completas, desde el diseño del frontend hasta la lógica del backend.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.dev.p2">Utilizo HTML, CSS, JavaScript y React para crear interfaces dinámicas y modernas, mientras que con Node.js implemento estructuras escalables y eficientes.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.dev.p3">También trabajo con bases de datos relacionales y no relacionales, garantizando un flujo de información seguro y optimizado.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.dev.p4">Mi objetivo es transformar ideas en productos digitales funcionales, estéticos y orientados a la experiencia del usuario.</p>
                       </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" target="_blank" href="https://github.com/romyro22">Ver repositorio</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://github.com/romyro22" data-i18n="personalProjects.dev.viewRepo">Ver repositorio</a>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Panel 3 -->
                 <div id="panel-illustration" role="tabpanel" aria-labelledby="tab-illustration" hidden>
                   <div class="panel-wrap">
@@ -726,20 +747,20 @@
                       <img src="img/ilustracion.png" alt="Ilustraciones" class="thumb-img" loading="lazy" decoding="async">
                     </div>
                     <div class="panel-body">
-                      <h3>Ilustración</h3>
+                      <h3 data-i18n="personalProjects.illustration.title">Ilustración</h3>
                       <p class="muted">
-                        <p style="margin: 0;">Fusiono técnicas tradicionales con ilustración digital para dar vida a conceptos visuales únicos. </p>
-                        <p style="margin: 0;">Las técnicas que utilizo son —dibujo tradicional, ilustración digital, gouache, acuarela, óleo, acrílico y óleo pastel— para crear composiciones expresivas y llenas de detalle.</p>
-                        <p style="margin: 0;">Mi enfoque combina la observación, el color y la emoción para transmitir ideas visuales.</p>
-                        <p style="margin: 0;">Mis obras destacan por su estilo expresivo y narrativo, aportando identidad y personalidad a cada proyecto.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.illustration.p1">Fusiono técnicas tradicionales con ilustración digital para dar vida a conceptos visuales únicos. </p>
+                        <p style="margin: 0;" data-i18n="personalProjects.illustration.p2">Las técnicas que utilizo son —dibujo tradicional, ilustración digital, gouache, acuarela, óleo, acrílico y óleo pastel— para crear composiciones expresivas y llenas de detalle.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.illustration.p3">Mi enfoque combina la observación, el color y la emoción para transmitir ideas visuales.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.illustration.p4">Mis obras destacan por su estilo expresivo y narrativo, aportando identidad y personalidad a cada proyecto.</p>
                       </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" target="_blank" href="galeria.html">Galería</a>
+                        <a class="btn btn-ghost" target="_blank" href="galeria.html" data-i18n="personalProjects.illustration.gallery">Galería</a>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Panel 4 -->
                 <div id="panel-ux" role="tabpanel" aria-labelledby="tab-ux" hidden>
                   <div class="panel-wrap">
@@ -747,15 +768,15 @@
                       <img src="img/figma.png" alt="ux-ui" class="thumb-img" loading="lazy" decoding="async">
                     </div>
                     <div class="panel-body">
-                      <h3>UX/UI design</h3>
+                      <h3 data-i18n="personalProjects.ux.title">UX/UI design</h3>
                       <p class="muted">
-                        <p style="margin: 0;">Diseño interfaces centradas en el usuario, priorizando la claridad, accesibilidad y coherencia visual.</p>
-                        <p style="margin: 0;">Creo prototipos interactivos que permiten validar ideas y optimizar la experiencia antes del desarrollo.</p>
-                        <p style="margin: 0;">Combino investigación, arquitectura de información y diseño visual para lograr productos intuitivos y agradables de usar.</p>
-                        <p style="margin: 0;">Mi objetivo es transformar necesidades reales en experiencias digitales funcionales, estéticas y significativas.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ux.p1">Diseño interfaces centradas en el usuario, priorizando la claridad, accesibilidad y coherencia visual.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ux.p2">Creo prototipos interactivos que permiten validar ideas y optimizar la experiencia antes del desarrollo.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ux.p3">Combino investigación, arquitectura de información y diseño visual para lograr productos intuitivos y agradables de usar.</p>
+                        <p style="margin: 0;" data-i18n="personalProjects.ux.p4">Mi objetivo es transformar necesidades reales en experiencias digitales funcionales, estéticas y significativas.</p>
                       </p>
                       <div class="panel-cta">
-                        <a class="btn btn-ghost" target="_blank" href="https://www.figma.com/@romyrotela">Ver prototipo</a>
+                        <a class="btn btn-ghost" target="_blank" href="https://www.figma.com/@romyrotela" data-i18n="personalProjects.ux.viewPrototype">Ver prototipo</a>
                       </div>
                     </div>
                   </div>
@@ -771,21 +792,289 @@
         <footer id="contacto">
           <div class="container">
             <div class="grid-2">
-              <p>¿Te gustaría trabajar conmigo? Escribime y armamos algo increíble.</p>
+              <p data-i18n="footer.cta">¿Te gustaría trabajar conmigo? Escribime y armamos algo increíble.</p>
               <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
-                <a class="btn btn-primary" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración." target="_blank" class="btn-whatsapp">Escribíme</a>
-                <a class="btn btn-ghost" href="docs/cv_rominarotela.pdf" aria-label="Ver CV PDF">Ver CV</a>
+                <a class="btn btn-primary" href="https://wa.me/595972716596?text=Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración." target="_blank" class="btn-whatsapp" data-i18n="footer.writeMe">Escribíme</a>
+                <a class="btn btn-ghost" href="docs/cv_rominarotela.pdf" aria-label="Ver CV PDF" data-i18n="footer.viewCV">Ver CV</a>
                 <a class="btn btn-ghost" href="https://github.com/romyro22" aria-label="GitHub">GitHub</a>
               </div>
             </div>
-            <p style="margin-top:18px">© <span id="y"></span> Romy — Hecho con ♥ y mucho café</p>
+            <p style="margin-top:18px" data-i18n="footer.copyright">© <span id="y"></span> Romy — Hecho con ♥ y mucho café</p>
           </div>
         </footer>
         
         <script>
           // año dinámico
           document.getElementById('y').textContent = new Date().getFullYear();
-          
+
+          // ===== INTERNATIONALIZATION =====
+          const translations = {
+            es: {
+              'header.tagline': 'Tecnología + Arte',
+              'header.contact': 'Contacto',
+              'hero.greeting': 'Hola! Soy',
+              'hero.title': '— Desarrolladora Frontend',
+              'hero.subtitle': 'Moderna, creativa y orientada a producto. Construyo interfaces rápidas, accesibles y hermosas con HTML/CSS/JS, React y Django/Wagtail.',
+              'hero.viewProjects': 'Ver proyectos',
+              'hero.skills': 'Habilidades',
+              'development.title': 'Desarrollo Profesional',
+              'development.education.title': 'Educación',
+              'development.education.item1': '■ Estudios Primarios y Secundarios - Colegio Villa San Francisco',
+              'development.education.item2': '■ Ingeniería Informática - Universidad Nacional de Asunción / Facultad Politécnica (Tesis en proceso).',
+              'development.languages.svgTitle': 'Idiomas',
+              'development.languages.title': 'Idiomas',
+              'development.languages.spanish': '■ Español: Nativo. ',
+              'development.languages.guarani': '■ Guaraní: Básico. ',
+              'development.languages.english': '■ Inglés: Intermedio Técnico. ',
+              'development.languages.portuguese': '■ Portugués: Básico. ',
+              'development.languages.french': '■ Francés: Básico. ',
+              'development.techSkills.svgTitle': 'Habilidades técnicas',
+              'development.techSkills.title': 'Habilidades Técnicas',
+              'development.techSkills.languages': '■ Lenguajes: Python, JavaScript, HTML5, CSS3, SQL. ',
+              'development.techSkills.frameworks': '■ Frameworks: Django, Wagtail, React, jQuery. ',
+              'development.techSkills.databases': '■ Bases de datos: PostgreSQL, MySQL. ',
+              'development.techSkills.tools': '■ Herramientas: Git, GitLab, GitHub, Figma, Docker. ',
+              'development.techSkills.methodologies': '■ Metodologías: Scrum, Agile. ',
+              'development.techSkills.other': '■ Otros: Seguridad informática, integración de APIs, pruebas y despliegue.',
+              'development.courses.svgTitle': 'Cursos y Especializaciones',
+              'development.courses.title': 'Cursos y Especializaciones',
+              'development.courses.item1': '■ Informática – Colegio Villa San Francisco: Editores de imágenes (Adobe Photoshop) - Graficadores Vectoriales (Corel Draw) - Editores de Video (Adobe Premiere Pro) ',
+              'development.courses.item2': '■ Técnico de computadoras – Centro de Especialización Profesional y Extensión Universitaria (CEPEU) ',
+              'development.courses.item3': '■ NDG Linux Unhatched – Curso online ofrecido por Network Development Group ',
+              'development.courses.item4': '■ CCNA Cisco Certified Network Associate –  CCNA I – Introduction to Networks ',
+              'development.courses.item5': '■ React y React Native CLI (actualmente cursando)  – Modalidad virtual ',
+              'development.courses.item6': '■ Generative Adversarial Networks and Stable Diffusion (actualmente cursando)  – Modalidad virtual',
+              'development.certificates.svgTitle': 'Certificados obtenidos',
+              'development.certificates.title': 'Certificados obtenidos',
+              'development.certificates.item1': '■ "Relaciones Humanas y P.N.L como factor de éxito Empresarial" – Consulting Group ',
+              'development.certificates.item2': '■ "Trabajo Efectivo de equipos en las organizaciones" – Consulting Group ',
+              'development.certificates.item3': '■ "Encuentro de Desarrolladores y Usuarios" – ABC color ',
+              'development.certificates.item4': '■ "Introducción a la Minería de Datos" – UNA, San Lorenzo ',
+              'development.certificates.item5': '■ "Seminario Internacional de Ciberseguridad" – KavaCon ',
+              'development.certificates.item6': '■ "Programa de pre - incubación TRIBU" – Emprendimiento E-VAL ',
+              'development.certificates.item7': '■ "Conferencias sobre Pensamiento Computacional, Ciudadanía Digital y Habilidades Socioemocionales – Meta Innova: Primer seminario internacional de innovación educativa realizado en Paraguay ',
+              'development.certificates.item8': '■ "Concurso de diseño y creación visual - Ñamombe\'u" - primer puesto ',
+              'experience.title': 'Experiencia Laboral',
+              'experience.job1.title': '(2010 - 2017) Soporte Técnico y Asistente Administrativo (AECID, CNLtrading, Mando) ',
+              'experience.job1.task1': '• Mantenimiento preventivo de hardware y software. ',
+              'experience.job1.task2': '• Atención al cliente y gestión de incidencias. ',
+              'experience.job2.title': '(2017 - 2019) Asistente Técnico / Administrativo (Mando Paraguay) ',
+              'experience.job2.task1': '• Instalación y mantenimiento de equipos. ',
+              'experience.job2.task2': '• Gestión administrativa y soporte a clientes.',
+              'experience.job3.title': '(2019 - 2021) Desarrolladora Web – Definetec ',
+              'experience.job3.task1': '• Desarrollo del ERP Odoo y facturación digital. ',
+              'experience.job3.task2': '• Desarrollo Frontend y Backend con Python, Django, JavaScript, jQuery, HTML, CSS.',
+              'experience.job3.task3': '• Uso de Git, GitHub, Bitbucket.',
+              'experience.job4.title': '(2021 - Actualidad) Desarrolladora Web – Paraguay Educa / Portal META ',
+              'experience.job4.task1': '• Desarrollo de aplicaciones web educativas con Python, Django, Wagtail y Moodle.  ',
+              'experience.job4.task2': '• Integración de APIs y despliegue de sistemas escalables en PostgreSQL.',
+              'experience.job4.task3': '• Uso de metodologías ágiles (Scrum, Taiga) y control de versiones con GitLab.',
+              'experience.job4.task4': '• Diseño de interfaces con Figma.',
+              'experience.job4.task5': '• Desarrollo e implementación de juegos educativos, herramientas con IA y web.',
+              'skills.title': ' Habilidades blandas y duras',
+              'skills.organization': 'Capacidad de organización y planificación',
+              'skills.leadership': 'Liderazgo',
+              'skills.communication': 'Comunicación efectiva',
+              'skills.problemSolving': 'Capacidad de resolución de problemas',
+              'skills.criticalThinking': 'Pensamiento crítico',
+              'skills.adaptability': 'Adaptabilidad',
+              'skills.timeManagement': 'Gestión del tiempo',
+              'workProjects.title': ' Proyectos laborales',
+              'workProjects.meta.title': 'Portal META — Web site',
+              'workProjects.meta.description': 'Desarrollo del Portal META con Django y Wagtail, integrando Moodle y otras plataformas educativas. Implementé bloques y páginas personalizadas para productos, simulaciones y recursos interactivos. Me enfoqué en la arquitectura, el diseño visual y la experiencia de usuario para garantizar un entorno educativo digital sólido y atractivo.',
+              'workProjects.educa.title': 'Paraguay Educa — Web site',
+              'workProjects.educa.description': 'Desarrollo de la página web de Paraguay Educa con Django y Wagtail, personalizando su arquitectura y módulos. Implementé funcionalidades interactivas para mejorar la experiencia. Adapté el diseño visual y los bloques dinámicos a la identidad institucional, asegurando usabilidad y consistencia.',
+              'workProjects.capi.title': 'Las aventuras de Capi y Pajarito — Juego educativo',
+              'workProjects.capi.description': 'Elaboración del juego educativo utilizando blockly y js, creando la dinámica interactiva de aprendizaje. Diseño integro de los personajes, desde sus características y personalidades hasta su ilustración final. El resultado fue una experiencia única que combina tecnología, narrativa y diseño visual para motivar a los niños a aprender programación jugando.',
+              'workProjects.metamatic.title': 'Metamatic — Juego educativo',
+              'workProjects.metamatic.description': 'Creación de una plataforma de juegos matemáticos integrados al Portal META. Implementación de un tablero interactivo adaptados a distintos niveles escolares. El enfoque fue la usabilidad y el diseño educativo para que los estudiantes practiquen matemáticas de forma dinámica y motivadora.',
+              'workProjects.ia.title': 'Herramientas con IA',
+              'workProjects.ia.description': 'Programación de herramientas educativas con IA integradas al Portal META, un compañero de escritura que asiste en redacción, trivias generadas automáticamente y chats interactivos con figuras históricas. Estas soluciones combinan innovación tecnológica con experiencias educativas inmersivas.',
+              'workProjects.pyensa.title': 'PYensa',
+              'workProjects.pyensa.description': 'Desarrollo de una página web para "PYensa" como catálogo digital de productos educativos, integrando Django y Wagtail. Implementé páginas dinámicas con filtros, buscadores y bloques personalizados para mostrar kits y materiales de aprendizaje. Adapté el diseño visual a la identidad de la marca, priorizando claridad, atractivo y usabilidad.',
+              'workProjects.viewMore': 'Ver más',
+              'personalProjects.title': 'Proyectos personales',
+              'personalProjects.ventures.tab': 'Emprendimientos',
+              'personalProjects.ventures.title': 'Emprendimientos',
+              'personalProjects.ventures.p1': 'Combino mi perfil creativo para impulsar proyectos propios que reflejan mi visión integral del arte y el diseño. ',
+              'personalProjects.ventures.p2': 'Fundé <strong><i>Rotiba</i></strong>, un emprendimiento dedicado a la creación de regalos únicos que conectan con la emoción y la identidad de cada persona. ',
+              'personalProjects.ventures.p3': 'Además, <strong><i>Creaciones Romy Rotela</i></strong>, donde desarrollo obras originales en óleo, acrílico, gouache, acuarela y técnicas digitales. ',
+              'personalProjects.ventures.p4': 'Ambos proyectos me permiten unir arte, innovación y gestión, consolidando una marca personal basada en la autenticidad, la estética y el valor artesanal.',
+              'personalProjects.dev.tab': 'Desarrollo web',
+              'personalProjects.dev.title': 'Desarrollo web',
+              'personalProjects.dev.p1': 'Desarrollo soluciones web completas, desde el diseño del frontend hasta la lógica del backend.',
+              'personalProjects.dev.p2': 'Utilizo HTML, CSS, JavaScript y React para crear interfaces dinámicas y modernas, mientras que con Node.js implemento estructuras escalables y eficientes.',
+              'personalProjects.dev.p3': 'También trabajo con bases de datos relacionales y no relacionales, garantizando un flujo de información seguro y optimizado.',
+              'personalProjects.dev.p4': 'Mi objetivo es transformar ideas en productos digitales funcionales, estéticos y orientados a la experiencia del usuario.',
+              'personalProjects.dev.viewRepo': 'Ver repositorio',
+              'personalProjects.illustration.tab': 'Ilustración',
+              'personalProjects.illustration.title': 'Ilustración',
+              'personalProjects.illustration.p1': 'Fusiono técnicas tradicionales con ilustración digital para dar vida a conceptos visuales únicos. ',
+              'personalProjects.illustration.p2': 'Las técnicas que utilizo son —dibujo tradicional, ilustración digital, gouache, acuarela, óleo, acrílico y óleo pastel— para crear composiciones expresivas y llenas de detalle.',
+              'personalProjects.illustration.p3': 'Mi enfoque combina la observación, el color y la emoción para transmitir ideas visuales.',
+              'personalProjects.illustration.p4': 'Mis obras destacan por su estilo expresivo y narrativo, aportando identidad y personalidad a cada proyecto.',
+              'personalProjects.illustration.gallery': 'Galería',
+              'personalProjects.ux.tab': 'UX/UI design',
+              'personalProjects.ux.title': 'UX/UI design',
+              'personalProjects.ux.p1': 'Diseño interfaces centradas en el usuario, priorizando la claridad, accesibilidad y coherencia visual.',
+              'personalProjects.ux.p2': 'Creo prototipos interactivos que permiten validar ideas y optimizar la experiencia antes del desarrollo.',
+              'personalProjects.ux.p3': 'Combino investigación, arquitectura de información y diseño visual para lograr productos intuitivos y agradables de usar.',
+              'personalProjects.ux.p4': 'Mi objetivo es transformar necesidades reales en experiencias digitales funcionales, estéticas y significativas.',
+              'personalProjects.ux.viewPrototype': 'Ver prototipo',
+              'footer.cta': '¿Te gustaría trabajar conmigo? Escribime y armamos algo increíble.',
+              'footer.writeMe': 'Escribíme',
+              'footer.viewCV': 'Ver CV',
+              'footer.copyright': '© <span id="y"></span> Romy — Hecho con ♥ y mucho café'
+            },
+            en: {
+              'header.tagline': 'Technology + Art',
+              'header.contact': 'Contact',
+              'hero.greeting': 'Hello! I\'m',
+              'hero.title': '— Frontend Developer',
+              'hero.subtitle': 'Modern, creative, and product-oriented. I build fast, accessible, and beautiful interfaces with HTML/CSS/JS, React, and Django/Wagtail.',
+              'hero.viewProjects': 'View projects',
+              'hero.skills': 'Skills',
+              'development.title': 'Professional Development',
+              'development.education.title': 'Education',
+              'development.education.item1': '■ Primary and Secondary Studies - Colegio Villa San Francisco',
+              'development.education.item2': '■ Computer Engineering - National University of Asunción / Polytechnic Faculty (Thesis in progress).',
+              'development.languages.svgTitle': 'Languages',
+              'development.languages.title': 'Languages',
+              'development.languages.spanish': '■ Spanish: Native. ',
+              'development.languages.guarani': '■ Guaraní: Basic. ',
+              'development.languages.english': '■ English: Technical Intermediate. ',
+              'development.languages.portuguese': '■ Portuguese: Basic. ',
+              'development.languages.french': '■ French: Basic. ',
+              'development.techSkills.svgTitle': 'Technical Skills',
+              'development.techSkills.title': 'Technical Skills',
+              'development.techSkills.languages': '■ Languages: Python, JavaScript, HTML5, CSS3, SQL. ',
+              'development.techSkills.frameworks': '■ Frameworks: Django, Wagtail, React, jQuery. ',
+              'development.techSkills.databases': '■ Databases: PostgreSQL, MySQL. ',
+              'development.techSkills.tools': '■ Tools: Git, GitLab, GitHub, Figma, Docker. ',
+              'development.techSkills.methodologies': '■ Methodologies: Scrum, Agile. ',
+              'development.techSkills.other': '■ Other: Information security, API integration, testing and deployment.',
+              'development.courses.svgTitle': 'Courses and Specializations',
+              'development.courses.title': 'Courses and Specializations',
+              'development.courses.item1': '■ Computer Science – Colegio Villa San Francisco: Image Editors (Adobe Photoshop) - Vector Graphics (Corel Draw) - Video Editors (Adobe Premiere Pro) ',
+              'development.courses.item2': '■ Computer Technician – Professional Specialization Center and University Extension (CEPEU) ',
+              'development.courses.item3': '■ NDG Linux Unhatched – Online course offered by Network Development Group ',
+              'development.courses.item4': '■ CCNA Cisco Certified Network Associate – CCNA I – Introduction to Networks ',
+              'development.courses.item5': '■ React and React Native CLI (currently studying) – Online mode ',
+              'development.courses.item6': '■ Generative Adversarial Networks and Stable Diffusion (currently studying) – Online mode',
+              'development.certificates.svgTitle': 'Certificates Obtained',
+              'development.certificates.title': 'Certificates Obtained',
+              'development.certificates.item1': '■ "Human Relations and NLP as a Business Success Factor" – Consulting Group ',
+              'development.certificates.item2': '■ "Effective Teamwork in Organizations" – Consulting Group ',
+              'development.certificates.item3': '■ "Developers and Users Meeting" – ABC color ',
+              'development.certificates.item4': '■ "Introduction to Data Mining" – UNA, San Lorenzo ',
+              'development.certificates.item5': '■ "International Cybersecurity Seminar" – KavaCon ',
+              'development.certificates.item6': '■ "TRIBU Pre-Incubation Program" – E-VAL Entrepreneurship ',
+              'development.certificates.item7': '■ "Conferences on Computational Thinking, Digital Citizenship and Socio-Emotional Skills – Meta Innova: First international educational innovation seminar held in Paraguay ',
+              'development.certificates.item8': '■ "Design and Visual Creation Contest - Ñamombe\'u" - first place ',
+              'experience.title': 'Work Experience',
+              'experience.job1.title': '(2010 - 2017) Technical Support and Administrative Assistant (AECID, CNLtrading, Mando) ',
+              'experience.job1.task1': '• Preventive hardware and software maintenance. ',
+              'experience.job1.task2': '• Customer service and incident management. ',
+              'experience.job2.title': '(2017 - 2019) Technical / Administrative Assistant (Mando Paraguay) ',
+              'experience.job2.task1': '• Equipment installation and maintenance. ',
+              'experience.job2.task2': '• Administrative management and customer support.',
+              'experience.job3.title': '(2019 - 2021) Web Developer – Definetec ',
+              'experience.job3.task1': '• Development of Odoo ERP and digital invoicing. ',
+              'experience.job3.task2': '• Frontend and Backend development with Python, Django, JavaScript, jQuery, HTML, CSS.',
+              'experience.job3.task3': '• Use of Git, GitHub, Bitbucket.',
+              'experience.job4.title': '(2021 - Present) Web Developer – Paraguay Educa / Portal META ',
+              'experience.job4.task1': '• Development of educational web applications with Python, Django, Wagtail and Moodle.  ',
+              'experience.job4.task2': '• API integration and deployment of scalable systems in PostgreSQL.',
+              'experience.job4.task3': '• Use of agile methodologies (Scrum, Taiga) and version control with GitLab.',
+              'experience.job4.task4': '• Interface design with Figma.',
+              'experience.job4.task5': '• Development and implementation of educational games, AI tools and web.',
+              'skills.title': ' Soft and Hard Skills',
+              'skills.organization': 'Organization and planning skills',
+              'skills.leadership': 'Leadership',
+              'skills.communication': 'Effective communication',
+              'skills.problemSolving': 'Problem-solving skills',
+              'skills.criticalThinking': 'Critical thinking',
+              'skills.adaptability': 'Adaptability',
+              'skills.timeManagement': 'Time management',
+              'workProjects.title': ' Work Projects',
+              'workProjects.meta.title': 'Portal META — Web site',
+              'workProjects.meta.description': 'Development of Portal META with Django and Wagtail, integrating Moodle and other educational platforms. I implemented custom blocks and pages for products, simulations and interactive resources. I focused on architecture, visual design and user experience to ensure a solid and attractive digital educational environment.',
+              'workProjects.educa.title': 'Paraguay Educa — Web site',
+              'workProjects.educa.description': 'Development of Paraguay Educa website with Django and Wagtail, customizing its architecture and modules. I implemented interactive features to enhance the experience. I adapted the visual design and dynamic blocks to the institutional identity, ensuring usability and consistency.',
+              'workProjects.capi.title': 'The Adventures of Capi and Pajarito — Educational Game',
+              'workProjects.capi.description': 'Development of an educational game using Blockly and JS, creating interactive learning dynamics. I fully designed the characters, from their traits and personalities to final illustrations. The result was a unique experience combining technology, narrative, and visual design to motivate children to learn programming through play.',
+              'workProjects.metamatic.title': 'Metamatic — Educational Game',
+              'workProjects.metamatic.description': 'Creation of a mathematical games platform integrated with Portal META. Implementation of an interactive board adapted to different school levels. The focus was on usability and educational design so students could practice mathematics dynamically and engagingly.',
+              'workProjects.ia.title': 'AI Tools',
+              'workProjects.ia.description': 'Programming of educational AI tools integrated with Portal META, including a writing companion that assists with composition, automatically generated trivias, and interactive chats with historical figures. These solutions combine technological innovation with immersive educational experiences.',
+              'workProjects.pyensa.title': 'PYensa',
+              'workProjects.pyensa.description': 'Development of a website for "PYensa" as a digital catalog of educational products, integrating Django and Wagtail. I implemented dynamic pages with filters, search engines, and custom blocks to showcase learning kits and materials. I adapted the visual design to the brand identity, prioritizing clarity, appeal, and usability.',
+              'workProjects.viewMore': 'View more',
+              'personalProjects.title': 'Personal Projects',
+              'personalProjects.ventures.tab': 'Ventures',
+              'personalProjects.ventures.title': 'Ventures',
+              'personalProjects.ventures.p1': 'I combine my creative profile to drive my own projects that reflect my comprehensive vision of art and design. ',
+              'personalProjects.ventures.p2': 'I founded <strong><i>Rotiba</i></strong>, a venture dedicated to creating unique gifts that connect with emotion and personal identity. ',
+              'personalProjects.ventures.p3': 'Additionally, <strong><i>Creaciones Romy Rotela</i></strong>, where I develop original works in oil, acrylic, gouache, watercolor, and digital techniques. ',
+              'personalProjects.ventures.p4': 'Both projects allow me to unite art, innovation, and management, consolidating a personal brand based on authenticity, aesthetics, and artisanal value.',
+              'personalProjects.dev.tab': 'Web Development',
+              'personalProjects.dev.title': 'Web Development',
+              'personalProjects.dev.p1': 'I develop complete web solutions, from frontend design to backend logic.',
+              'personalProjects.dev.p2': 'I use HTML, CSS, JavaScript, and React to create dynamic and modern interfaces, while with Node.js I implement scalable and efficient structures.',
+              'personalProjects.dev.p3': 'I also work with relational and non-relational databases, ensuring a secure and optimized information flow.',
+              'personalProjects.dev.p4': 'My goal is to transform ideas into functional, aesthetic, user experience-oriented digital products.',
+              'personalProjects.dev.viewRepo': 'View repository',
+              'personalProjects.illustration.tab': 'Illustration',
+              'personalProjects.illustration.title': 'Illustration',
+              'personalProjects.illustration.p1': 'I blend traditional techniques with digital illustration to bring unique visual concepts to life. ',
+              'personalProjects.illustration.p2': 'The techniques I use are —traditional drawing, digital illustration, gouache, watercolor, oil, acrylic, and oil pastel— to create expressive and detail-rich compositions.',
+              'personalProjects.illustration.p3': 'My approach combines observation, color, and emotion to convey visual ideas.',
+              'personalProjects.illustration.p4': 'My works stand out for their expressive and narrative style, bringing identity and personality to every project.',
+              'personalProjects.illustration.gallery': 'Gallery',
+              'personalProjects.ux.tab': 'UX/UI Design',
+              'personalProjects.ux.title': 'UX/UI Design',
+              'personalProjects.ux.p1': 'I design user-centered interfaces, prioritizing clarity, accessibility, and visual consistency.',
+              'personalProjects.ux.p2': 'I create interactive prototypes that allow validating ideas and optimizing the experience before development.',
+              'personalProjects.ux.p3': 'I combine research, information architecture, and visual design to achieve intuitive and pleasant-to-use products.',
+              'personalProjects.ux.p4': 'My goal is to transform real needs into functional, aesthetic, and meaningful digital experiences.',
+              'personalProjects.ux.viewPrototype': 'View prototype',
+              'footer.cta': 'Would you like to work with me? Write to me and let\'s create something amazing.',
+              'footer.writeMe': 'Write to me',
+              'footer.viewCV': 'View CV',
+              'footer.copyright': '© <span id="y"></span> Romy — Made with ♥ and lots of coffee'
+            }
+          };
+
+          // Language switcher logic
+          let currentLang = localStorage.getItem('portfolio-language') || 'es';
+
+          function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('portfolio-language', lang);
+            document.documentElement.lang = lang;
+
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+              const key = el.getAttribute('data-i18n');
+              if (translations[lang][key]) {
+                el.innerHTML = translations[lang][key];
+              }
+            });
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+              btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+          }
+
+          // Initialize language on page load
+          setLanguage(currentLang);
+
+          // Add click handlers to language buttons
+          document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+          });
+
           (function(){
             const tablist = document.querySelector('#destacados .tabs');
             if(!tablist) return;

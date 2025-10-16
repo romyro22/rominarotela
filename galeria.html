@@ -138,6 +138,23 @@
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   .pill{font-size:12px; color:#cfe; background:rgba(124,92,255,.15); border:1px solid rgba(124,92,255,.35); padding:6px 10px; border-radius:999px}
 
+  /* Language Switcher */
+  .lang-switcher{
+    display:flex;gap:4px;background:#ffffff12;border-radius:999px;padding:4px;
+  }
+  .lang-btn{
+    padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:600;
+    cursor:pointer;border:none;background:transparent;color:var(--text);
+    transition:all .2s ease;
+  }
+  .lang-btn.active{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 4px 12px rgba(124,92,255,.3);
+  }
+  .lang-btn:hover:not(.active){
+    background:#ffffff18;
+  }
+
   /* Responsive modal en pantallas pequeñas */
   @media (max-width: 820px){
     .modal{grid-template-columns:1fr}
@@ -149,15 +166,19 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <div>
-          <h1>Galería de Arte</h1>
+        <div style="display:flex;gap:12px;align-items:center">
+          <h1 data-i18n="page.title">Galería de Arte</h1>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="es" aria-label="Cambiar a Español">ES</button>
+            <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
+          </div>
         </div>
         <div class="controls">
-          <input id="q" class="input" type="search" placeholder="Buscar por nombre, inspiración, técnica, material…" aria-label="Buscar obras" />
+          <input id="q" class="input" type="search" placeholder="Buscar por nombre, inspiración, técnica, material…" data-i18n-placeholder="search.placeholder" aria-label="Buscar obras" />
         </div>
         <div class="controls">
           <select id="filter-tech" aria-label="Filtrar por técnica">
-            <option value="">Todas las técnicas</option>
+            <option value="" data-i18n="filter.all">Todas las técnicas</option>
           </select>
         </div>
       </div>
@@ -171,10 +192,46 @@
 
   <!-- Modal -->
   <dialog id="dlg" aria-labelledby="dlg-title" aria-describedby="dlg-desc">
-    <button class="close-x" aria-label="Cerrar" onclick="closeModal()">✕</button>
+    <button class="close-x" data-i18n-aria="modal.close" aria-label="Cerrar" onclick="closeModal()">✕</button>
     <div class="modal">
       <div class="left">
         <img id="dlg-img" class="hero" alt="" />
+      </div>
+      <div class="right">
+        <h2 id="dlg-title"></h2>
+        <span id="dlg-tech-pill" class="pill"></span>
+        <p id="dlg-desc" class="muted" style="margin-top:12px"></p>
+
+        <div class="meta">
+          <div class="kv">
+            <div class="k" data-i18n="modal.size">Tamaño</div>
+            <div class="v" id="dlg-size"></div>
+          </div>
+          <div class="kv">
+            <div class="k" data-i18n="modal.technique">Técnica</div>
+            <div class="v" id="dlg-technique"></div>
+          </div>
+        </div>
+
+        <div class="section" id="section-longdesc" style="display:none">
+          <h3 data-i18n="modal.description">Descripción</h3>
+          <p id="dlg-longdesc"></p>
+        </div>
+
+        <div class="section" id="section-inspiration" style="display:none">
+          <h3 data-i18n="modal.inspiration">Inspiración</h3>
+          <p id="dlg-inspiration"></p>
+        </div>
+
+        <div class="section" id="section-materials" style="display:none">
+          <h3 data-i18n="modal.materials">Materiales</h3>
+          <p id="dlg-materials"></p>
+        </div>
+
+        <div class="actions">
+          <button id="dlg-copy" class="btn primary" data-i18n="modal.copy">Copiar ficha</button>
+          <button class="btn" onclick="closeModal()" data-i18n="modal.closeBtn">Cerrar</button>
+        </div>
       </div>
     </div>
   </dialog>
@@ -185,85 +242,210 @@
     {
       id: "perla_inu",
       name: "Perla Inu",
+      name_en: "Perla Inu",
       description: "Una reinterpretación humorística y moderna del famoso cuadro 'La joven con el arete de perla' de Johannes Vermeer. Es una mezcla entre arte clásico y cultura pop digital.",
+      description_en: "A humorous and modern reinterpretation of the famous painting 'Girl with a Pearl Earring' by Johannes Vermeer. It's a blend of classical art and digital pop culture.",
       longDescription: "",
+      longDescription_en: "",
       inspiration: "",
+      inspiration_en: "",
       size: "40 × 30 cm",
       technique: "Óleo sobre lienzo",
+      technique_en: "Oil on canvas",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/pintura.png",
       tags: ["óleo", "contemporáneo"]
     },
     {
       id: "el_retrato_de_una_culpa_silenciosa",
       name: "El retrato de una culpa silenciosa",
+      name_en: "Portrait of a Silent Guilt",
       description: "1° Puesto - Ñamombe'u 2024. Obra inspirada en el libro 'Tarde de abril' de Carlos Martini. 'Ciertos pasajes de nuestra vida no se borran nunca y allí adonde vamos están con nosotros'. ",
+      description_en: "1st Place - Ñamombe'u 2024. Work inspired by the book 'Tarde de abril' by Carlos Martini. 'Certain passages of our life are never erased and wherever we go they are with us'.",
       longDescription: "",
+      longDescription_en: "",
       size: "30 × 30 cm",
       technique: "Óleo sobre lienzo",
+      technique_en: "Oil on canvas",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/oleo.png",
       tags: ["óleo","monocromático"]
     },
     {
       id: "la_tristeza_del_guason",
       name: "La tristeza del Guasón",
+      name_en: "The Joker's Sadness",
       description: "Este retrato muestra al personaje del Guasón (Joaquin Phoenix), con un enfoque emocional más íntimo. Se enfatiza su tristeza y vulnerabilidad.",
+      description_en: "This portrait shows the Joker character (Joaquin Phoenix) with a more intimate emotional focus. It emphasizes his sadness and vulnerability.",
       longDescription: "",
+      longDescription_en: "",
       inspiration: "",
+      inspiration_en: "",
       size: "20 × 20 cm",
       technique: "Gouache",
+      technique_en: "Gouache",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/gouache.png",
       tags: ["gouache","tinta"]
     },
     {
       id: "la_niña_y_el_gato_negro",
       name: "La niña y el gato negro",
+      name_en: "The Girl and the Black Cat",
       description: "Ilustración de un cuento lleno de magia y una historia por descubrir. Una niña de mirada curiosa y estilo vintage junto a su misterioso gato en un fondo llenos de flores.",
+      description_en: "Illustration of a tale full of magic and a story to discover. A girl with a curious look and vintage style alongside her mysterious cat on a background full of flowers.",
       longDescription:"",
+      longDescription_en:"",
       inspiration: "",
+      inspiration_en: "",
       size: "500 × 400 px",
       technique: "Ilustración digital",
+      technique_en: "Digital illustration",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/ilustracion.png",
       tags: ["ilustración","digital"]
     },
     {
       id: "pedro_pedro_pedro",
       name: "Pedro, Pedro, Pedro",
+      name_en: "Pedro, Pedro, Pedro",
       description: "Historieta del Mapache Pedro. Ilustración digital del mapache que camina entre la vegetación del bosque, rodeado de hojas verdes y sombras naturales.",
+      description_en: "Comic strip of Pedro the Raccoon. Digital illustration of the raccoon walking through forest vegetation, surrounded by green leaves and natural shadows.",
       longDescription:"",
+      longDescription_en:"",
       size: "500 × 300 px",
       technique: "Ilustración digital",
+      technique_en: "Digital illustration",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/ilustración.png",
       tags: ["ilustración","digital"]
     },
     {
       id: "las_aventuras_de_capi_y_pajarito",
       name: "Las aventuras de Capi y Pajarito",
+      name_en: "The Adventures of Capi and Pajarito",
       description: "Ilustración digital en pixelart para un juego educativo de programación. Los personajes principales, Capi y Pajarito en medio de la naturaleza de Paraguay.",
+      description_en: "Pixel art digital illustration for an educational programming game. The main characters, Capi and Pajarito in the midst of Paraguay's nature.",
       longDescription:"",
+      longDescription_en:"",
       inspiration: "",
+      inspiration_en: "",
       size: "500 × 400 px",
       technique: "Pixelart",
+      technique_en: "Pixel art",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/pixelart.png",
       tags: ["ilustración","digital","pixelart"]
     },
     {
       id: "madre_e_hijo",
       name: "Madre e hijo",
+      name_en: "Mother and Son",
       description: "Dibujo tradicional hecho a mano alazada inspirada en una fotografía real, donde las líneas de lápiz y grafito reinterpretan la calidez del momento compartido entre madre e hijo.",
+      description_en: "Traditional freehand drawing inspired by a real photograph, where pencil and graphite lines reinterpret the warmth of the moment shared between mother and son.",
       longDescription: "",
+      longDescription_en: "",
       size: "21 × 35 cm",
       technique: "Dibujo tradicional",
+      technique_en: "Traditional drawing",
       materials: "",
+      materials_en: "",
       image: "/img/galeria/dibujo.png",
       tags: ["dibujo","tradicional"]
     }
   ];
+
+  // ====== Traducciones ======
+  const translations = {
+    es: {
+      'page.title': 'Galería de Arte',
+      'search.placeholder': 'Buscar por nombre, inspiración, técnica, material…',
+      'filter.all': 'Todas las técnicas',
+      'results.count': (n) => `${n} obra${n>1?'s':''} encontradas`,
+      'results.none': 'Sin resultados',
+      'modal.close': 'Cerrar',
+      'modal.size': 'Tamaño',
+      'modal.technique': 'Técnica',
+      'modal.description': 'Descripción',
+      'modal.inspiration': 'Inspiración',
+      'modal.materials': 'Materiales',
+      'modal.copy': 'Copiar ficha',
+      'modal.copied': 'Copiado ✓',
+      'modal.closeBtn': 'Cerrar',
+      'card.open': (name) => `Abrir ${name}`
+    },
+    en: {
+      'page.title': 'Art Gallery',
+      'search.placeholder': 'Search by name, inspiration, technique, material…',
+      'filter.all': 'All techniques',
+      'results.count': (n) => `${n} artwork${n>1?'s':''} found`,
+      'results.none': 'No results',
+      'modal.close': 'Close',
+      'modal.size': 'Size',
+      'modal.technique': 'Technique',
+      'modal.description': 'Description',
+      'modal.inspiration': 'Inspiration',
+      'modal.materials': 'Materials',
+      'modal.copy': 'Copy details',
+      'modal.copied': 'Copied ✓',
+      'modal.closeBtn': 'Close',
+      'card.open': (name) => `Open ${name}`
+    }
+  };
+
+  let currentLang = localStorage.getItem('portfolio-language') || 'es';
+
+  function t(key, ...args) {
+    const translation = translations[currentLang][key];
+    return typeof translation === 'function' ? translation(...args) : translation;
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('portfolio-language', lang);
+    document.documentElement.lang = lang;
+
+    // Update UI elements with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (translations[lang][key]) {
+        el.placeholder = translations[lang][key];
+      }
+    });
+
+    // Update aria-labels
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      if (translations[lang][key]) {
+        el.setAttribute('aria-label', translations[lang][key]);
+      }
+    });
+
+    // Update language buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+
+    // Update technique filter options
+    fillTechniques();
+
+    // Re-render artworks with new language
+    render(currentList());
+  }
 
   // ====== Lógica de interfaz ======
   const grid = document.getElementById('grid');
@@ -272,21 +454,35 @@
   const resultsCount = document.getElementById('results-count');
 
   // Popular filtro de técnicas
-  (function fillTechniques(){
+  function fillTechniques(){
+    // Clear existing options except the first one (All techniques)
+    while(filterTech.options.length > 1) {
+      filterTech.remove(1);
+    }
+
     const set = new Set(artworks.map(a => a.technique));
     [...set].sort().forEach(t=>{
       const opt = document.createElement('option');
-      opt.value = t; opt.textContent = t;
+      opt.value = t;
+      // Show translated technique name, but keep Spanish value for filtering
+      const tEn = artworks.find(a => a.technique === t)?.technique_en;
+      opt.textContent = currentLang === 'en' && tEn ? tEn : t;
       filterTech.appendChild(opt);
     });
-  })();
+  }
 
   function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,""); }
 
   function matches(a, query, tech){
+    // Search in both Spanish and English fields
     const hay = [
-      a.name, a.description, a.longDescription, a.inspiration, a.technique,
-      a.materials, ...(a.tags||[])
+      a.name, a.name_en,
+      a.description, a.description_en,
+      a.longDescription, a.longDescription_en,
+      a.inspiration, a.inspiration_en,
+      a.technique, a.technique_en,
+      a.materials, a.materials_en,
+      ...(a.tags||[])
     ].map(normalize).join(" | ");
     const okQ = !query || hay.includes(query);
     const okT = !tech || a.technique === tech;
@@ -296,17 +492,21 @@
   function render(list){
     grid.innerHTML = '';
     list.forEach(a=>{
+      const name = currentLang === 'en' && a.name_en ? a.name_en : a.name;
+      const description = currentLang === 'en' && a.description_en ? a.description_en : a.description;
+      const technique = currentLang === 'en' && a.technique_en ? a.technique_en : a.technique;
+
       const card = document.createElement('article');
       card.className = 'card';
       card.innerHTML = `
-        <a href="#" class="thumb" aria-label="Abrir ${escapeHtml(a.name)}">
-          <img loading="lazy" src="${a.image}" alt="Vista previa de ${escapeHtml(a.name)}">
+        <a href="#" class="thumb" aria-label="${t('card.open', escapeHtml(name))}">
+          <img loading="lazy" src="${a.image}" alt="Vista previa de ${escapeHtml(name)}">
         </a>
         <div class="body">
-          <h3 class="title">${escapeHtml(a.name)}</h3>
-          <p class="desc">${escapeHtml(a.description)}</p>
+          <h3 class="title">${escapeHtml(name)}</h3>
+          <p class="desc">${escapeHtml(description)}</p>
           <div class="tags">
-            <span class="tag">${escapeHtml(a.technique)}</span>
+            <span class="tag">${escapeHtml(technique)}</span>
             <span class="tag">${escapeHtml(a.size)}</span>
           </div>
         </div>
@@ -319,9 +519,7 @@
       });
       grid.appendChild(card);
     });
-    resultsCount.textContent = list.length
-      ? `${list.length} obra${list.length>1?'s':''} encontradas`
-      : 'Sin resultados';
+    resultsCount.textContent = list.length ? t('results.count', list.length) : t('results.none');
   }
 
   function currentList(){
@@ -333,8 +531,16 @@
   q.addEventListener('input', ()=> render(currentList()));
   filterTech.addEventListener('change', ()=> render(currentList()));
 
-  // Inicial
-  render(artworks);
+  // Initialize technique filter and render
+  fillTechniques();
+
+  // Initialize language on load (also renders artworks)
+  setLanguage(currentLang);
+
+  // Language button click handlers
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+  });
 
   // ====== Modal ======
   const dlg = document.getElementById('dlg');
@@ -352,32 +558,49 @@
   function openModal(id){
     const a = artworks.find(x=>x.id===id);
     if(!a) return;
+
+    const name = currentLang === 'en' && a.name_en ? a.name_en : a.name;
+    const description = currentLang === 'en' && a.description_en ? a.description_en : a.description;
+    const longDescription = currentLang === 'en' && a.longDescription_en ? a.longDescription_en : a.longDescription;
+    const inspiration = currentLang === 'en' && a.inspiration_en ? a.inspiration_en : a.inspiration;
+    const technique = currentLang === 'en' && a.technique_en ? a.technique_en : a.technique;
+    const materials = currentLang === 'en' && a.materials_en ? a.materials_en : a.materials;
+
     dlgImg.src = a.image;
-    dlgImg.alt = `Imagen de la obra ${a.name}`;
-    dlgTitle.textContent = a.name;
-    dlgDesc.textContent = a.description;
-    dlgLong.textContent = a.longDescription;
-    dlgInsp.textContent = a.inspiration;
+    dlgImg.alt = `${currentLang === 'en' ? 'Image of the artwork' : 'Imagen de la obra'} ${name}`;
+    dlgTitle.textContent = name;
+    dlgDesc.textContent = description;
+    dlgLong.textContent = longDescription;
+    dlgInsp.textContent = inspiration;
     dlgSize.textContent = a.size;
-    dlgTech.textContent = a.technique;
-    dlgMat.textContent = a.materials;
-    dlgTechPill.textContent = a.technique;
+    dlgTech.textContent = technique;
+    dlgMat.textContent = materials;
+    dlgTechPill.textContent = technique;
+
+    // Show/hide optional sections
+    document.getElementById('section-longdesc').style.display = longDescription ? 'block' : 'none';
+    document.getElementById('section-inspiration').style.display = inspiration ? 'block' : 'none';
+    document.getElementById('section-materials').style.display = materials ? 'block' : 'none';
 
     dlgCopy.onclick = ()=>{
-      const ficha = `Obra: ${a.name}
-Descripción: ${a.longDescription}
-Inspiración: ${a.inspiration}
-Tamaño: ${a.size}
-Técnica: ${a.technique}
-Materiales: ${a.materials}`;
+      const labels = currentLang === 'en'
+        ? { work: 'Artwork', desc: 'Description', insp: 'Inspiration', size: 'Size', tech: 'Technique', mat: 'Materials' }
+        : { work: 'Obra', desc: 'Descripción', insp: 'Inspiración', size: 'Tamaño', tech: 'Técnica', mat: 'Materiales' };
+
+      const ficha = `${labels.work}: ${name}
+${labels.desc}: ${longDescription}
+${labels.insp}: ${inspiration}
+${labels.size}: ${a.size}
+${labels.tech}: ${technique}
+${labels.mat}: ${materials}`;
       navigator.clipboard.writeText(ficha).then(()=>{
-        dlgCopy.textContent = "Copiado ✓";
-        setTimeout(()=> dlgCopy.textContent = "Copiar ficha", 1200);
+        dlgCopy.textContent = t('modal.copied');
+        setTimeout(()=> dlgCopy.textContent = t('modal.copy'), 1200);
       });
     };
 
     if(typeof dlg.showModal === "function"){ dlg.showModal(); }
-    else{ alert("Tu navegador no soporta <dialog>."); }
+    else{ alert(currentLang === 'en' ? "Your browser doesn't support <dialog>." : "Tu navegador no soporta <dialog>."); }
   }
   function closeModal(){ if(dlg.open) dlg.close(); }
   window.closeModal = closeModal;
