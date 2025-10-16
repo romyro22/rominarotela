@@ -197,7 +197,7 @@
       border-radius: 24px;
       padding: 18px;
       box-shadow: var(--shadow);
-      max-width: 50vw;
+      max-width: 70vw;
     }
 
     .portrait-inner {
@@ -541,15 +541,10 @@
         font-size: clamp(20px, 5vw, 28px);
       }
 
+      span,
+      a,
+      strong,
       p {
-        font-size: clamp(18px, 2.5vw, 21px);
-      }
-
-      strong {
-        font-size: clamp(18px, 2.5vw, 21px);
-      }
-
-      span {
         font-size: clamp(18px, 2.5vw, 21px) !important;
       }
 
@@ -569,6 +564,7 @@
       .portrait {
         height: auto;
         width: 100%;
+        max-width: 50vw;
       }
 
       .cta {
@@ -624,6 +620,12 @@
 
       .pill {
         font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .portrait {
+        max-width: 90vw;
       }
     }
   </style>
