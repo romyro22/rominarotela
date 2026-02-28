@@ -32,7 +32,16 @@ describe("rowToArtwork", () => {
     expect(artwork.nameEs).toBe("Nombre");
     expect(artwork.nameEn).toBe("Name");
     expect(artwork.descriptionEs).toBe("Descripción");
+    expect(artwork.descriptionEn).toBe("Description");
+    expect(artwork.longDescriptionEs).toBe("Larga desc");
+    expect(artwork.longDescriptionEn).toBe("Long desc");
+    expect(artwork.inspirationEs).toBe("Inspiración");
+    expect(artwork.inspirationEn).toBe("Inspiration");
+    expect(artwork.size).toBe("30x40");
     expect(artwork.techniqueEs).toBe("Acuarela");
+    expect(artwork.techniqueEn).toBe("Watercolor");
+    expect(artwork.materialsEs).toBe("Papel");
+    expect(artwork.materialsEn).toBe("Paper");
     expect(artwork.imageKey).toBe("artworks/test-1/img.png");
     expect(artwork.sortOrder).toBe(5);
     expect(artwork.createdAt).toBe("2026-01-01 00:00:00");

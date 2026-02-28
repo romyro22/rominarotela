@@ -31,6 +31,13 @@ function parseTags(raw: string): string[] {
     const parsed: unknown = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed.filter((t): t is string => typeof t === "string") : [];
   } catch {
+    console.log(
+      JSON.stringify({
+        event: "mapper.parseTags.failed",
+        rawValue: raw.length > 100 ? `${raw.slice(0, 100)}…` : raw,
+        fixSuggestion: "Check tags column value in D1 — expected JSON array of strings",
+      }),
+    );
     return [];
   }
 }

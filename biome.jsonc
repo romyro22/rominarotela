@@ -17,6 +17,8 @@
     "enabled": true,
     "rules": { "recommended": true }
   },
+  // Biome cannot analyze .astro template sections, so imports/variables used only
+  // in the template appear as false-positive "unused" warnings. Disable for *.astro files.
   "overrides": [
     {
       "includes": ["**/*.astro"],

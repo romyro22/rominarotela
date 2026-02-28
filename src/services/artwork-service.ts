@@ -3,19 +3,42 @@ import { rowToArtwork } from "../utils/mapper";
 
 /** Returns all artworks ordered by sort_order ascending. */
 export async function getAllArtworks(db: D1Database): Promise<Artwork[]> {
-  const result = await db
-    .prepare("SELECT * FROM artworks ORDER BY sort_order ASC")
-    .all<ArtworkRow>();
-  return result.results.map(rowToArtwork);
+  try {
+    const result = await db
+      .prepare("SELECT * FROM artworks ORDER BY sort_order ASC")
+      .all<ArtworkRow>();
+    return result.results.map(rowToArtwork);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.getAll.failed",
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and artworks table schema",
+      }),
+    );
+    throw error;
+  }
 }
 
 /** Returns a single artwork by ID, or null if not found. */
 export async function getArtworkById(db: D1Database, artworkId: string): Promise<Artwork | null> {
-  const row = await db
-    .prepare("SELECT * FROM artworks WHERE id = ?")
-    .bind(artworkId)
-    .first<ArtworkRow>();
-  return row ? rowToArtwork(row) : null;
+  try {
+    const row = await db
+      .prepare("SELECT * FROM artworks WHERE id = ?")
+      .bind(artworkId)
+      .first<ArtworkRow>();
+    return row ? rowToArtwork(row) : null;
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.getById.failed",
+        artworkId,
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and artworks table schema",
+      }),
+    );
+    throw error;
+  }
 }
 
 /** Returns artworks filtered by technique (Spanish). */
@@ -23,59 +46,102 @@ export async function getArtworksByTechnique(
   db: D1Database,
   technique: string,
 ): Promise<Artwork[]> {
-  const result = await db
-    .prepare("SELECT * FROM artworks WHERE technique_es = ? ORDER BY sort_order ASC")
-    .bind(technique)
-    .all<ArtworkRow>();
-  return result.results.map(rowToArtwork);
+  try {
+    const result = await db
+      .prepare("SELECT * FROM artworks WHERE technique_es = ? ORDER BY sort_order ASC")
+      .bind(technique)
+      .all<ArtworkRow>();
+    return result.results.map(rowToArtwork);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.getByTechnique.failed",
+        technique,
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and technique_es column",
+      }),
+    );
+    throw error;
+  }
 }
 
 /** Returns distinct technique names (Spanish). */
 export async function getDistinctTechniques(db: D1Database): Promise<string[]> {
-  const result = await db
-    .prepare("SELECT DISTINCT technique_es FROM artworks ORDER BY technique_es ASC")
-    .all<{ technique_es: string }>();
-  return result.results.map((r) => r.technique_es);
+  try {
+    const result = await db
+      .prepare("SELECT DISTINCT technique_es FROM artworks ORDER BY technique_es ASC")
+      .all<{ technique_es: string }>();
+    return result.results.map((r) => r.technique_es);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.getDistinctTechniques.failed",
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and technique_es column",
+      }),
+    );
+    throw error;
+  }
 }
 
-/** Creates a new artwork and returns it. */
+/** Creates a new artwork and returns it. Throws if INSERT or subsequent read fails. */
 export async function createArtwork(db: D1Database, input: CreateArtworkInput): Promise<Artwork> {
-  const tags = JSON.stringify(input.tags ?? []);
-  await db
-    .prepare(
-      `INSERT INTO artworks (id, name_es, name_en, description_es, description_en,
-       long_description_es, long_description_en, inspiration_es, inspiration_en,
-       size, technique_es, technique_en, materials_es, materials_en,
-       image_key, tags, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    )
-    .bind(
-      input.id,
-      input.nameEs,
-      input.nameEn,
-      input.descriptionEs,
-      input.descriptionEn,
-      input.longDescriptionEs ?? "",
-      input.longDescriptionEn ?? "",
-      input.inspirationEs ?? "",
-      input.inspirationEn ?? "",
-      input.size,
-      input.techniqueEs,
-      input.techniqueEn,
-      input.materialsEs ?? "",
-      input.materialsEn ?? "",
-      input.imageKey,
-      tags,
-      input.sortOrder ?? 0,
-    )
-    .run();
+  try {
+    const tags = JSON.stringify(input.tags ?? []);
+    await db
+      .prepare(
+        `INSERT INTO artworks (id, name_es, name_en, description_es, description_en,
+         long_description_es, long_description_en, inspiration_es, inspiration_en,
+         size, technique_es, technique_en, materials_es, materials_en,
+         image_key, tags, sort_order)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        input.id,
+        input.nameEs,
+        input.nameEn,
+        input.descriptionEs,
+        input.descriptionEn,
+        input.longDescriptionEs ?? "",
+        input.longDescriptionEn ?? "",
+        input.inspirationEs ?? "",
+        input.inspirationEn ?? "",
+        input.size,
+        input.techniqueEs,
+        input.techniqueEn,
+        input.materialsEs ?? "",
+        input.materialsEn ?? "",
+        input.imageKey,
+        tags,
+        input.sortOrder ?? 0,
+      )
+      .run();
 
-  const created = await getArtworkById(db, input.id);
-  if (!created) throw new Error(`Failed to retrieve created artwork: ${input.id}`);
-  return created;
+    const created = await getArtworkById(db, input.id);
+    if (!created) throw new Error(`Failed to retrieve created artwork: ${input.id}`);
+    return created;
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.create.failed",
+        artworkId: input.id,
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and input data for constraint violations",
+      }),
+    );
+    throw error;
+  }
 }
 
-/** Updates an existing artwork. Returns updated artwork or null if not found. */
+/**
+ * Updates an existing artwork. Returns updated artwork or null if not found.
+ *
+ * When `input` has no fields to update (empty object), returns the existing artwork
+ * unchanged as a no-op — the caller can treat this as a successful "nothing to change" case.
+ *
+ * Column names in the SET clause are derived from a hardcoded field mapping (not user input),
+ * so dynamic SQL construction here is safe from injection.
+ */
 export async function updateArtwork(
   db: D1Database,
   artworkId: string,
@@ -102,23 +168,47 @@ export async function updateArtwork(
   const entries = Object.entries(fieldMap);
   if (entries.length === 0) return getArtworkById(db, artworkId);
 
-  fieldMap.updated_at = new Date().toISOString().replace("T", " ").slice(0, 19);
-  const allEntries = Object.entries(fieldMap);
+  try {
+    fieldMap.updated_at = new Date().toISOString().replace("T", " ").slice(0, 19);
+    const allEntries = Object.entries(fieldMap);
 
-  const setClauses = allEntries.map(([col]) => `${col} = ?`).join(", ");
-  const values = allEntries.map(([, val]) => val);
+    const setClauses = allEntries.map(([col]) => `${col} = ?`).join(", ");
+    const values = allEntries.map(([, val]) => val);
 
-  const result = await db
-    .prepare(`UPDATE artworks SET ${setClauses} WHERE id = ?`)
-    .bind(...values, artworkId)
-    .run();
+    const result = await db
+      .prepare(`UPDATE artworks SET ${setClauses} WHERE id = ?`)
+      .bind(...values, artworkId)
+      .run();
 
-  if (result.meta.changes === 0) return null;
-  return getArtworkById(db, artworkId);
+    if (result.meta.changes === 0) return null;
+    return getArtworkById(db, artworkId);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.update.failed",
+        artworkId,
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and input data for constraint violations",
+      }),
+    );
+    throw error;
+  }
 }
 
 /** Deletes an artwork by ID. Returns true if deleted, false if not found. */
 export async function deleteArtwork(db: D1Database, artworkId: string): Promise<boolean> {
-  const result = await db.prepare("DELETE FROM artworks WHERE id = ?").bind(artworkId).run();
-  return result.meta.changes > 0;
+  try {
+    const result = await db.prepare("DELETE FROM artworks WHERE id = ?").bind(artworkId).run();
+    return result.meta.changes > 0;
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "artwork.delete.failed",
+        artworkId,
+        errorMessage: error instanceof Error ? error.message : "Unknown error",
+        fixSuggestion: "Check D1 binding and artworkId value",
+      }),
+    );
+    throw error;
+  }
 }

@@ -40,4 +40,12 @@ describe("isAuthorized", () => {
 
     expect(isAuthorized(request, API_KEY)).toBe(false);
   });
+
+  it("should return false with lowercase 'bearer' prefix", () => {
+    const request = new Request("https://example.com", {
+      headers: { Authorization: `bearer ${API_KEY}` },
+    });
+
+    expect(isAuthorized(request, API_KEY)).toBe(false);
+  });
 });

@@ -7,11 +7,11 @@
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "astro build && wrangler deploy",
-    "check": "biome check src/",
-    "check:fix": "biome check --write src/",
+    "check": "biome check src/ tests/",
+    "check:fix": "biome check --write src/ tests/",
     "test": "vitest run",
     "typecheck": "astro check && tsc --noEmit",
-    "validate": "biome check src/ && astro check && tsc --noEmit && vitest run"
+    "validate": "biome check src/ tests/ && astro check && tsc --noEmit && vitest run"
   },
   "repository": {
     "type": "git",
@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/romyro22/rominarotela#readme",
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
     "@astrojs/cloudflare": "^12.6.12",
     "astro": "^5.18.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
     "@biomejs/biome": "^2.4.4",
     "@cloudflare/vitest-pool-workers": "^0.12.18",
     "@cloudflare/workers-types": "^4.20260305.0",

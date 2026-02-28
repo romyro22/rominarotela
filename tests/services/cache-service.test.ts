@@ -68,4 +68,22 @@ describe("CacheService", () => {
     expect(await env.CACHE.get("artworks:all")).toBeNull();
     expect(await env.CACHE.get("artworks:techniques")).toBeNull();
   });
+
+  it("should treat corrupted cache value as miss and refetch", async () => {
+    await env.CACHE.put("test:corrupt", "not-valid-json{{{");
+
+    let callCount = 0;
+    const fetchFn = async () => {
+      callCount++;
+      return { value: "fresh-after-corrupt" };
+    };
+
+    const result = await getCachedOrFetch(env.CACHE, "test:corrupt", fetchFn);
+
+    expect(result).toEqual({ value: "fresh-after-corrupt" });
+    expect(callCount).toBe(1);
+
+    const cached = await env.CACHE.get("test:corrupt", "text");
+    expect(cached).toBe(JSON.stringify({ value: "fresh-after-corrupt" }));
+  });
 });

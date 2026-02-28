@@ -9,7 +9,18 @@ export async function getCachedOrFetch<T>(
 ): Promise<T> {
   const cached = await cache.get(key, "text");
   if (cached !== null) {
-    return JSON.parse(cached) as T;
+    try {
+      return JSON.parse(cached) as T;
+    } catch {
+      console.log(
+        JSON.stringify({
+          event: "cache.parse.failed",
+          key,
+          fixSuggestion: "Corrupted KV value — treating as cache miss",
+        }),
+      );
+      await cache.delete(key);
+    }
   }
 
   const fresh = await fetchFn();
