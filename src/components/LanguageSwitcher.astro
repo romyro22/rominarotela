@@ -1,0 +1,43 @@
+---
+interface Props {
+  locale: string;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+
+/**
+ * Build the URL for the alternate locale.
+ * ES is the default locale (no prefix). EN uses /en/ prefix.
+ */
+function getAlternateUrl(path: string, currentLocale: string): string {
+  if (currentLocale === "en") {
+    // Remove /en prefix to get Spanish URL
+    return path.replace(/^\/en\/?/, "/") || "/";
+  }
+  // Add /en prefix for English URL
+  return `/en${path === "/" ? "/" : path}`;
+}
+
+const alternateUrl = getAlternateUrl(currentPath, locale);
+
+const esUrl = locale === "es" ? currentPath : alternateUrl;
+const enUrl = locale === "en" ? currentPath : alternateUrl;
+---
+
+<div class="lang-switcher">
+  <a
+    href={esUrl}
+    class:list={["lang-btn", { active: locale === "es" }]}
+    aria-label="Espanol"
+  >
+    ES
+  </a>
+  <a
+    href={enUrl}
+    class:list={["lang-btn", { active: locale === "en" }]}
+    aria-label="English"
+  >
+    EN
+  </a>
+</div>

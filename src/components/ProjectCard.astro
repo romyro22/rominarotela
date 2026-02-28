@@ -1,0 +1,36 @@
+---
+import { t } from "../i18n/utils";
+
+interface Props {
+  image: string;
+  titleKey: string;
+  descriptionKey: string;
+  badges: string[];
+  url: string;
+  locale: string;
+  alt?: string;
+}
+
+const { image, titleKey, descriptionKey, badges, url, locale, alt } = Astro.props;
+const imageAlt = alt ?? t(locale, titleKey);
+---
+
+<article class="card project">
+  <div class="thumb">
+    <img
+      src={image}
+      alt={imageAlt}
+      class="thumb-img"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    {badges.map((badge) => <span class="badge">{badge}</span>)}
+  </div>
+  <h4>{t(locale, titleKey)}</h4>
+  <p class="muted">{t(locale, descriptionKey)}</p>
+  <a class="btn btn-ghost" target="_blank" rel="noopener noreferrer" href={url}>
+    {t(locale, "workProjects.viewMore")}
+  </a>
+</article>

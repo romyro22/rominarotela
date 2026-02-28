@@ -1,0 +1,36 @@
+---
+import { localizedField } from "../i18n/utils";
+import type { Artwork } from "../types/artwork";
+
+interface Props {
+  artwork: Artwork;
+  locale: string;
+}
+
+const { artwork, locale } = Astro.props;
+const name = localizedField(locale, artwork.nameEs, artwork.nameEn);
+const description = localizedField(locale, artwork.descriptionEs, artwork.descriptionEn);
+const technique = localizedField(locale, artwork.techniqueEs, artwork.techniqueEn);
+const imageUrl = `/api/images/${artwork.imageKey}`;
+const searchableText = `${name} ${description} ${technique} ${artwork.tags.join(" ")}`;
+---
+
+<article
+  class="card"
+  data-artwork-id={artwork.id}
+  data-name={name}
+  data-technique-es={artwork.techniqueEs}
+  data-searchable={searchableText}
+>
+  <a href="#" class="thumb" aria-label={`${locale === "en" ? "Open" : "Abrir"} ${name}`}>
+    <img loading="lazy" src={imageUrl} alt={`${locale === "en" ? "Preview of" : "Vista previa de"} ${name}`} />
+  </a>
+  <div class="body">
+    <h3 class="title">{name}</h3>
+    <p class="desc">{description}</p>
+    <div class="tags">
+      <span class="tag">{technique}</span>
+      <span class="tag">{artwork.size}</span>
+    </div>
+  </div>
+</article>

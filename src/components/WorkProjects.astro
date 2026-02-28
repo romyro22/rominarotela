@@ -1,0 +1,82 @@
+---
+import { t } from "../i18n/utils";
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+
+const projects = [
+  {
+    image: "/img/portalmeta.png",
+    titleKey: "workProjects.meta.title",
+    descriptionKey: "workProjects.meta.description",
+    badges: ["Django", "Wagtail", "UX/UI", "IA"],
+    url: "https://www.portalmeta.org.py/",
+  },
+  {
+    image: "/img/paraguayeduca.png",
+    titleKey: "workProjects.educa.title",
+    descriptionKey: "workProjects.educa.description",
+    badges: ["Django", "Wagtail", "HTML/CSS", "JS"],
+    url: "https://paraguayeduca.org/pages/paraguay-educa/index/",
+  },
+  {
+    image: "/img/capiypajarito.png",
+    titleKey: "workProjects.capi.title",
+    descriptionKey: "workProjects.capi.description",
+    badges: ["Blockly", "HTML/CSS", "UX/UI", "PixelArt"],
+    url: "https://www.portalmeta.org.py/blockly/programming_game/",
+  },
+  {
+    image: "/img/metamatic.png",
+    titleKey: "workProjects.metamatic.title",
+    descriptionKey: "workProjects.metamatic.description",
+    badges: ["HTML/CCS", "JS", "jQuery"],
+    url: "https://www.portalmeta.org.py/infopages/math_game/",
+  },
+  {
+    image: "/img/herramientasIA.png",
+    titleKey: "workProjects.ia.title",
+    descriptionKey: "workProjects.ia.description",
+    badges: ["IA", "UX/UI", "HTML/CSS", "JS"],
+    url: "https://www.portalmeta.org.py/base/submenu/Inteligencia%20Artificial/",
+  },
+  {
+    image: "/img/pyensa.png",
+    titleKey: "workProjects.pyensa.title",
+    descriptionKey: "workProjects.pyensa.description",
+    badges: ["Branding", "UI", "HTML/CSS"],
+    url: "https://paraguayeduca.org/pages/productos-pyensa/pyeduca-techbox/",
+  },
+];
+---
+
+<div id="proyectos" style="padding: 14px 0;"></div>
+<section>
+  <div class="container">
+    <h2 class="sect-title">
+      <span
+        class="accent-dot"
+        style="background:var(--accent-magenta);box-shadow:0 0 0 6px #FF3C8E30"
+      ></span>
+      <span>{t(locale, "workProjects.title")}</span>
+    </h2>
+    <div class="grid-3">
+      {
+        projects.map((project) => (
+          <ProjectCard
+            image={project.image}
+            titleKey={project.titleKey}
+            descriptionKey={project.descriptionKey}
+            badges={project.badges}
+            url={project.url}
+            locale={locale}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

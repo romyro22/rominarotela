@@ -1,0 +1,57 @@
+---
+import { getCvPath, t } from "../i18n/utils";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const currentYear = new Date().getFullYear();
+const cvPath = getCvPath(locale);
+
+const whatsappBaseUrl = "https://wa.me/595972716596";
+const whatsappMessage =
+  locale === "en"
+    ? "Hello%2C%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20get%20in%20touch%20to%20discuss%20a%20possible%20collaboration."
+    : "Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración.";
+const contactUrl = `${whatsappBaseUrl}?text=${whatsappMessage}`;
+---
+
+<footer id="contacto">
+  <div class="container">
+    <div class="grid-2">
+      <p>{t(locale, "footer.cta")}</p>
+      <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
+        <a
+          class="btn btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={contactUrl}
+        >
+          {t(locale, "footer.writeMe")}
+        </a>
+        <a
+          class="btn btn-ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={cvPath}
+          aria-label={locale === "en" ? "View CV PDF" : "Ver CV PDF"}
+        >
+          {t(locale, "footer.viewCV")}
+        </a>
+        <a
+          class="btn btn-ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/romyro22"
+          aria-label="GitHub"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+    <p style="margin-top:18px">
+      &copy; {currentYear} {t(locale, "footer.copyright")}
+    </p>
+  </div>
+</footer>

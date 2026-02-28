@@ -1,0 +1,47 @@
+---
+import { t } from "../i18n/utils";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const whatsappBaseUrl = "https://wa.me/595972716596";
+const whatsappMessage =
+  locale === "en"
+    ? "Hello%2C%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20get%20in%20touch%20to%20discuss%20a%20possible%20collaboration."
+    : "Hola%2C%20vi%20tu%20portafolio%20y%20me%20gustaría%20ponerme%20en%20contacto%20contigo%20para%20hablar%20de%20una%20posible%20colaboración.";
+const contactUrl = `${whatsappBaseUrl}?text=${whatsappMessage}`;
+---
+
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <a href={locale === "en" ? "/en/" : "/"}>
+        <img
+          src="/img/logomrri.png"
+          alt="romy.dev"
+          loading="lazy"
+          decoding="async"
+          style="width: 150px;"
+        />
+      </a>
+    </div>
+    <nav style="display:flex;gap:12px;align-items:center">
+      <span class="chip">{t(locale, "header.tagline")}</span>
+      <LanguageSwitcher locale={locale} currentPath={currentPath} />
+      <a
+        class="btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={contactUrl}
+        style="padding:10px 16px;border-radius:12px;background:linear-gradient(90deg,var(--accent-magenta),var(--accent-orange));font-weight:700;box-shadow:var(--shadow);"
+      >
+        {t(locale, "header.contact")}
+      </a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,181 @@
+---
+import { t } from "../i18n/utils";
+import type { Artwork } from "../types/artwork";
+
+interface Props {
+  locale: string;
+  artworks: Artwork[];
+}
+
+const { locale, artworks } = Astro.props;
+---
+
+<dialog id="dlg" aria-labelledby="dlg-title" aria-describedby="dlg-desc">
+  <button
+    class="close-x"
+    aria-label={t(locale, "gallery.modal.close")}
+    id="modal-close-x"
+  >
+    &#x2715;
+  </button>
+  <div class="modal">
+    <div class="left">
+      <img id="dlg-img" class="hero" alt="" />
+    </div>
+    <div class="right">
+      <h2 id="dlg-title"></h2>
+      <span id="dlg-tech-pill" class="pill"></span>
+      <p id="dlg-desc" class="muted" style="margin-top:12px"></p>
+
+      <div class="meta">
+        <div class="kv">
+          <div class="k">{t(locale, "gallery.modal.size")}</div>
+          <div class="v" id="dlg-size"></div>
+        </div>
+        <div class="kv">
+          <div class="k">{t(locale, "gallery.modal.technique")}</div>
+          <div class="v" id="dlg-technique"></div>
+        </div>
+      </div>
+
+      <div class="section" id="section-longdesc" style="display:none">
+        <h3>{t(locale, "gallery.modal.description")}</h3>
+        <p id="dlg-longdesc"></p>
+      </div>
+
+      <div class="section" id="section-inspiration" style="display:none">
+        <h3>{t(locale, "gallery.modal.inspiration")}</h3>
+        <p id="dlg-inspiration"></p>
+      </div>
+
+      <div class="section" id="section-materials" style="display:none">
+        <h3>{t(locale, "gallery.modal.materials")}</h3>
+        <p id="dlg-materials"></p>
+      </div>
+
+      <div class="actions">
+        <button id="dlg-copy" class="btn primary">
+          {t(locale, "gallery.modal.copy")}
+        </button>
+        <button class="btn" id="modal-close-btn">
+          {t(locale, "gallery.modal.close")}
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script type="application/json" id="artworks-data" set:html={JSON.stringify(artworks)} />
+
+<script is:inline define:vars={{ locale }}>
+  (function () {
+    const dataEl = document.getElementById("artworks-data");
+    if (!dataEl) return;
+    const artworks = JSON.parse(dataEl.textContent || "[]");
+
+    const dlg = document.getElementById("dlg");
+    const dlgImg = document.getElementById("dlg-img");
+    const dlgTitle = document.getElementById("dlg-title");
+    const dlgDesc = document.getElementById("dlg-desc");
+    const dlgLong = document.getElementById("dlg-longdesc");
+    const dlgInsp = document.getElementById("dlg-inspiration");
+    const dlgSize = document.getElementById("dlg-size");
+    const dlgTech = document.getElementById("dlg-technique");
+    const dlgMat = document.getElementById("dlg-materials");
+    const dlgTechPill = document.getElementById("dlg-tech-pill");
+    const dlgCopy = document.getElementById("dlg-copy");
+
+    function localizedField(fieldEs, fieldEn) {
+      return locale === "en" && fieldEn ? fieldEn : fieldEs;
+    }
+
+    function openModal(id) {
+      var artwork = null;
+      for (var i = 0; i < artworks.length; i++) {
+        if (artworks[i].id === id) { artwork = artworks[i]; break; }
+      }
+      if (!artwork) return;
+
+      var name = localizedField(artwork.nameEs, artwork.nameEn);
+      var description = localizedField(artwork.descriptionEs, artwork.descriptionEn);
+      var longDescription = localizedField(artwork.longDescriptionEs, artwork.longDescriptionEn);
+      var inspiration = localizedField(artwork.inspirationEs, artwork.inspirationEn);
+      var technique = localizedField(artwork.techniqueEs, artwork.techniqueEn);
+      var materials = localizedField(artwork.materialsEs, artwork.materialsEn);
+
+      dlgImg.src = "/api/images/" + artwork.imageKey;
+      dlgImg.alt = (locale === "en" ? "Image of the artwork " : "Imagen de la obra ") + name;
+      dlgTitle.textContent = name;
+      dlgDesc.textContent = description;
+      dlgLong.textContent = longDescription;
+      dlgInsp.textContent = inspiration;
+      dlgSize.textContent = artwork.size;
+      dlgTech.textContent = technique;
+      dlgMat.textContent = materials;
+      dlgTechPill.textContent = technique;
+
+      document.getElementById("section-longdesc").style.display = longDescription ? "block" : "none";
+      document.getElementById("section-inspiration").style.display = inspiration ? "block" : "none";
+      document.getElementById("section-materials").style.display = materials ? "block" : "none";
+
+      var copyLabel = locale === "en" ? "Copy details" : "Copiar ficha";
+      var copiedLabel = locale === "en" ? "Copied \u2713" : "Copiado \u2713";
+
+      dlgCopy.onclick = function () {
+        var labels = locale === "en"
+          ? { work: "Artwork", desc: "Description", insp: "Inspiration", size: "Size", tech: "Technique", mat: "Materials" }
+          : { work: "Obra", desc: "Descripcion", insp: "Inspiracion", size: "Tamano", tech: "Tecnica", mat: "Materiales" };
+
+        var ficha = labels.work + ": " + name + "\n"
+          + labels.desc + ": " + (longDescription || description) + "\n"
+          + labels.insp + ": " + (inspiration || "") + "\n"
+          + labels.size + ": " + artwork.size + "\n"
+          + labels.tech + ": " + technique + "\n"
+          + labels.mat + ": " + (materials || "");
+
+        navigator.clipboard.writeText(ficha).then(function () {
+          dlgCopy.textContent = copiedLabel;
+          setTimeout(function () { dlgCopy.textContent = copyLabel; }, 1200);
+        });
+      };
+
+      if (typeof dlg.showModal === "function") {
+        dlg.showModal();
+      }
+    }
+
+    function closeModal() {
+      if (dlg.open) dlg.close();
+    }
+
+    // Expose globally for card click handlers
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+
+    // Close button handlers
+    document.getElementById("modal-close-x").addEventListener("click", closeModal);
+    document.getElementById("modal-close-btn").addEventListener("click", closeModal);
+
+    // ESC key handler
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeModal();
+    });
+
+    // Backdrop click handler
+    dlg.addEventListener("click", function (e) {
+      if (e.target === dlg) closeModal();
+    });
+
+    // Card click handlers — attach to all .card .thumb links
+    document.querySelectorAll(".card .thumb").forEach(function (thumb) {
+      thumb.addEventListener("click", function (e) {
+        e.preventDefault();
+        var card = thumb.closest(".card");
+        if (card) {
+          var artworkId = card.getAttribute("data-artwork-id");
+          if (artworkId) openModal(artworkId);
+        }
+      });
+    });
+  })();
+</script>

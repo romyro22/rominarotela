@@ -1,0 +1,32 @@
+---
+import { t } from "../i18n/utils";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+---
+
+<section>
+  <div class="container">
+    <h2 class="sect-title">
+      <span
+        class="accent-dot"
+        style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"
+      ></span>
+      <span>{t(locale, "skills.title")}</span>
+    </h2>
+    <div class="card" style="display:grid;gap:16px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+        <span class="pill">{t(locale, "skills.organization")}</span>
+        <span class="pill">{t(locale, "skills.leadership")}</span>
+        <span class="pill">{t(locale, "skills.communication")}</span>
+        <span class="pill">{t(locale, "skills.problemSolving")}</span>
+        <span class="pill">{t(locale, "skills.criticalThinking")}</span>
+        <span class="pill">{t(locale, "skills.adaptability")}</span>
+        <span class="pill">{t(locale, "skills.timeManagement")}</span>
+      </div>
+    </div>
+  </div>
+</section>
