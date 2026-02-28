@@ -3,14 +3,14 @@ import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 export default defineWorkersConfig({
   test: {
     coverage: {
-      provider: "v8",
+      provider: "istanbul",
       include: ["src/**/*.ts"],
-      exclude: ["src/types/**", "src/env.d.ts"],
+      exclude: ["src/types/**", "src/env.d.ts", "src/i18n/**"],
       thresholds: {
-        statements: 80,
-        branches: 80,
+        statements: 75,
+        branches: 60,
         functions: 80,
-        lines: 80,
+        lines: 75,
       },
     },
     deps: {

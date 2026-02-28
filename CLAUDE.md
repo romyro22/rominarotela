@@ -4,7 +4,7 @@
 
 ## Current State
 
-Astro 5 + Cloudflare Workers. Portfolio SSR + Gallery with D1/R2/KV backend. API CRUD for artworks with API key auth. i18n ES/EN via Astro routing. Legacy HTML files preserved at root for reference.
+Astro 5 + Cloudflare Workers. Portfolio SSR + Gallery with D1/R2/KV backend. API CRUD for artworks with API key auth. i18n ES/EN via Astro routing.
 
 ## Rules
 
