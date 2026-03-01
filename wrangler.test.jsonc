@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio-test",
+  "compatibility_date": "2026-02-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "portfolio-db",
+    "database_id": "43ecee4c-32c5-42dd-9df7-d10325b9d146"
+  }],
+  "kv_namespaces": [{
+    "binding": "CACHE",
+    "id": "9fb367f5af3d42bc9d246700eba62dab"
+  }],
+  "r2_buckets": [{
+    "binding": "STORAGE",
+    "bucket_name": "rominarotela-images"
+  }]
+}
