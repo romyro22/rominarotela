@@ -56,11 +56,17 @@ export async function deleteImage(storage: R2Bucket, key: string): Promise<void>
   }
 }
 
-/** Lists all image keys for a given artwork. */
+/** Lists all image keys for a given artwork. Handles R2 pagination for >1000 keys. */
 export async function listArtworkImages(storage: R2Bucket, artworkId: string): Promise<string[]> {
   try {
-    const listed = await storage.list({ prefix: `artworks/${artworkId}/` });
-    return listed.objects.map((obj) => obj.key);
+    const keys: string[] = [];
+    let cursor: string | undefined;
+    do {
+      const listed = await storage.list({ prefix: `artworks/${artworkId}/`, cursor });
+      keys.push(...listed.objects.map((obj) => obj.key));
+      cursor = listed.truncated ? listed.cursor : undefined;
+    } while (cursor);
+    return keys;
   } catch (error) {
     console.log(
       JSON.stringify({

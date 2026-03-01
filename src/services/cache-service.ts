@@ -33,7 +33,7 @@ export async function invalidateCache(cache: KVNamespace, key: string): Promise<
   await cache.delete(key);
 }
 
-/** Invalidates all artwork-related cache keys. */
+/** Invalidates all artwork-related cache keys, including per-technique filter caches. */
 export async function invalidateArtworkCache(
   cache: KVNamespace,
   artworkId?: string,
@@ -43,4 +43,8 @@ export async function invalidateArtworkCache(
   if (artworkId) {
     await cache.delete(`artwork:${artworkId}`);
   }
+
+  // Invalidate per-technique filter caches (prefixed with artworks:technique:)
+  const techniqueKeys = await cache.list({ prefix: "artworks:technique:" });
+  await Promise.all(techniqueKeys.keys.map((k) => cache.delete(k.name)));
 }

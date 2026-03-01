@@ -14,17 +14,29 @@ const ALLOWED_MIME_TYPES: Record<string, string> = {
   "image/gif": ".gif",
 };
 
-/** PNG, JPEG, GIF, WEBP magic byte signatures. */
+/** PNG, JPEG, GIF magic byte signatures. WebP checked separately (RIFF + WEBP at offset 8). */
 const MAGIC_BYTES: Array<{ mime: string; bytes: number[] }> = [
   { mime: "image/png", bytes: [0x89, 0x50, 0x4e, 0x47] },
   { mime: "image/jpeg", bytes: [0xff, 0xd8, 0xff] },
   { mime: "image/gif", bytes: [0x47, 0x49, 0x46, 0x38] },
-  { mime: "image/webp", bytes: [0x52, 0x49, 0x46, 0x46] },
 ];
+
+const RIFF_HEADER = [0x52, 0x49, 0x46, 0x46]; // "RIFF"
+const WEBP_MARKER = [0x57, 0x45, 0x42, 0x50]; // "WEBP" at offset 8
 
 /** Detects MIME type from file's magic bytes. Returns null if unrecognized. */
 function detectMimeFromBytes(buffer: ArrayBuffer): string | null {
   const header = new Uint8Array(buffer, 0, Math.min(12, buffer.byteLength));
+
+  // WebP: RIFF????WEBP (bytes 0-3 = RIFF, bytes 8-11 = WEBP)
+  if (
+    header.byteLength >= 12 &&
+    RIFF_HEADER.every((b, i) => header[i] === b) &&
+    WEBP_MARKER.every((b, i) => header[8 + i] === b)
+  ) {
+    return "image/webp";
+  }
+
   for (const sig of MAGIC_BYTES) {
     if (sig.bytes.every((b, i) => header[i] === b)) {
       return sig.mime;

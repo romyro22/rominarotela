@@ -145,6 +145,19 @@ describe("POST /api/artworks", () => {
     expect(response.status).toBe(400);
     expect(body.error.code).toBe("INVALID_FIELDS");
   });
+
+  it("should return 400 with invalid ID format", async () => {
+    const ctx = createAuthenticatedContext({
+      method: "POST",
+      url: "https://example.com/api/artworks",
+      body: { ...VALID_CREATE_BODY, id: "../traversal/attack" },
+    });
+    const response = await POST(ctx);
+    const body = (await response.json()) as ApiError;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("INVALID_ID");
+  });
 });
 
 describe("GET /api/artworks/:id", () => {
@@ -190,6 +203,18 @@ describe("GET /api/artworks/:id", () => {
 
     expect(response.status).toBe(400);
     expect(body.error.code).toBe("MISSING_ID");
+  });
+
+  it("should return 400 for invalid ID format", async () => {
+    const ctx = createMockContext({
+      url: "https://example.com/api/artworks/../../etc/passwd",
+      params: { id: "../../etc/passwd" },
+    });
+    const response = await GET_BY_ID(ctx);
+    const body = (await response.json()) as ApiError;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("INVALID_ID");
   });
 });
 
@@ -255,6 +280,20 @@ describe("PUT /api/artworks/:id", () => {
 
     expect(response.status).toBe(400);
     expect(body.error.code).toBe("INVALID_FIELDS");
+  });
+
+  it("should return 400 with empty update body", async () => {
+    const ctx = createAuthenticatedContext({
+      method: "PUT",
+      url: "https://example.com/api/artworks/art-1",
+      params: { id: "art-1" },
+      body: {},
+    });
+    const response = await PUT(ctx);
+    const body = (await response.json()) as ApiError;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("EMPTY_UPDATE");
   });
 });
 

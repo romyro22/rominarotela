@@ -9,6 +9,8 @@ import type { CreateArtworkInput } from "../../../types/artwork";
 import { isAuthorized } from "../../../utils/auth";
 import { jsonError, jsonSuccess } from "../../../utils/response";
 
+const SAFE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
 /** GET /api/artworks — List all artworks. Supports ?technique= filter. Cached via KV. */
 export async function GET(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
@@ -122,6 +124,14 @@ export async function POST(context: APIContext): Promise<Response> {
     return jsonError(
       "INVALID_FIELDS",
       `Missing or invalid required fields: ${REQUIRED_STRING_FIELDS.join(", ")}`,
+      400,
+    );
+  }
+
+  if (!SAFE_ID_PATTERN.test(artworkInput.id)) {
+    return jsonError(
+      "INVALID_ID",
+      "Artwork ID must contain only alphanumeric characters, hyphens, and underscores",
       400,
     );
   }

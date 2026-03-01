@@ -6,15 +6,33 @@ import type { UpdateArtworkInput } from "../../../types/artwork";
 import { isAuthorized } from "../../../utils/auth";
 import { jsonError, jsonSuccess } from "../../../utils/response";
 
+const SAFE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
+/** Extracts and validates artwork ID from params. Returns [id, null] or [null, errorResponse]. */
+function extractArtworkId(params: APIContext["params"]): [string, null] | [null, Response] {
+  const artworkId = params.id;
+  if (!artworkId) {
+    return [null, jsonError("MISSING_ID", "Artwork ID is required", 400)];
+  }
+  if (!SAFE_ID_PATTERN.test(artworkId)) {
+    return [
+      null,
+      jsonError(
+        "INVALID_ID",
+        "Artwork ID must contain only alphanumeric characters, hyphens, and underscores",
+        400,
+      ),
+    ];
+  }
+  return [artworkId, null];
+}
+
 /** GET /api/artworks/:id — Get a single artwork by ID. Cached via KV. */
 export async function GET(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { DB, CACHE } = runtime.env;
-  const artworkId = context.params.id;
-
-  if (!artworkId) {
-    return jsonError("MISSING_ID", "Artwork ID is required", 400);
-  }
+  const [artworkId, idError] = extractArtworkId(context.params);
+  if (idError) return idError;
 
   try {
     const cacheKey = `artwork:${artworkId}`;
@@ -83,11 +101,8 @@ function validateUpdateInput(body: Record<string, unknown>): UpdateArtworkInput 
 export async function PUT(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { DB, CACHE, API_KEY } = runtime.env;
-  const artworkId = context.params.id;
-
-  if (!artworkId) {
-    return jsonError("MISSING_ID", "Artwork ID is required", 400);
-  }
+  const [artworkId, idError] = extractArtworkId(context.params);
+  if (idError) return idError;
 
   if (!isAuthorized(context.request, API_KEY)) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);
@@ -107,6 +122,10 @@ export async function PUT(context: APIContext): Promise<Response> {
   const input = validateUpdateInput(body as Record<string, unknown>);
   if (input === null) {
     return jsonError("INVALID_FIELDS", "One or more fields have invalid types", 400);
+  }
+
+  if (Object.keys(input).length === 0) {
+    return jsonError("EMPTY_UPDATE", "At least one field must be provided for update", 400);
   }
 
   try {
@@ -134,11 +153,8 @@ export async function PUT(context: APIContext): Promise<Response> {
 export async function DELETE(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { DB, CACHE, STORAGE, API_KEY } = runtime.env;
-  const artworkId = context.params.id;
-
-  if (!artworkId) {
-    return jsonError("MISSING_ID", "Artwork ID is required", 400);
-  }
+  const [artworkId, idError] = extractArtworkId(context.params);
+  if (idError) return idError;
 
   if (!isAuthorized(context.request, API_KEY)) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);

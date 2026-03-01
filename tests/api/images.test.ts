@@ -116,6 +116,46 @@ describe("POST /api/images/upload", () => {
     expect(body.error.code).toBe("INVALID_ARTWORK_ID");
   });
 
+  it("should return 400 without artworkId field", async () => {
+    const formData = new FormData();
+    formData.append("file", createJpegBlob());
+
+    const request = new Request("https://example.com/api/images/upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.API_KEY}` },
+      body: formData,
+    });
+    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
+    Object.defineProperty(ctx, "request", { value: request });
+
+    const response = await POST(ctx);
+    const body = (await response.json()) as ApiError;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("MISSING_ARTWORK_ID");
+  });
+
+  it("should return 400 when file exceeds max size", async () => {
+    const largeFile = createJpegBlob(11 * 1024 * 1024); // 11 MB
+    const formData = new FormData();
+    formData.append("file", largeFile);
+    formData.append("artworkId", "art-test");
+
+    const request = new Request("https://example.com/api/images/upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.API_KEY}` },
+      body: formData,
+    });
+    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
+    Object.defineProperty(ctx, "request", { value: request });
+
+    const response = await POST(ctx);
+    const body = (await response.json()) as ApiError;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("FILE_TOO_LARGE");
+  });
+
   it("should return 400 when magic bytes don't match declared MIME", async () => {
     const formData = new FormData();
     formData.append("file", createFakeImageBlob());
