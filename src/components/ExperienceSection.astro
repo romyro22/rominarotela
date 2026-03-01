@@ -1,0 +1,71 @@
+---
+import { t } from "../i18n/utils";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+---
+
+<div id="habilidades" style="padding: 14px 0;"></div>
+<section>
+  <div class="container">
+    <h2 class="sect-title">
+      <span
+        class="accent-dot"
+        style="background:var(--accent-yellow);box-shadow:0 0 0 6px #FFD24D30"
+      ></span>
+      <span>{t(locale, "experience.title")}</span>
+    </h2>
+    <div class="row">
+      <!-- Job 4 (most recent) -->
+      <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
+        <div>
+          <p style="font-weight: bold;color: var(--accent-yellow);">
+            {t(locale, "experience.job4.title")}
+          </p>
+          <p><span>{t(locale, "experience.job4.task1")}</span></p>
+          <p><span>{t(locale, "experience.job4.task2")}</span></p>
+          <p><span>{t(locale, "experience.job4.task3")}</span></p>
+          <p><span>{t(locale, "experience.job4.task4")}</span></p>
+          <p><span>{t(locale, "experience.job4.task5")}</span></p>
+        </div>
+      </div>
+
+      <!-- Job 3 -->
+      <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
+        <div>
+          <p style="font-weight: bold;color: var(--accent-yellow);">
+            {t(locale, "experience.job3.title")}
+          </p>
+          <p><span>{t(locale, "experience.job3.task1")}</span></p>
+          <p><span>{t(locale, "experience.job3.task2")}</span></p>
+          <p><span>{t(locale, "experience.job3.task3")}</span></p>
+        </div>
+      </div>
+
+      <!-- Job 2 -->
+      <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
+        <div>
+          <p style="font-weight: bold;color: var(--accent-yellow);">
+            {t(locale, "experience.job2.title")}
+          </p>
+          <p><span>{t(locale, "experience.job2.task1")}</span></p>
+          <p><span>{t(locale, "experience.job2.task2")}</span></p>
+        </div>
+      </div>
+
+      <!-- Job 1 -->
+      <div style="display:grid;gap:16px;margin: 10px 0;" class="col-4 card">
+        <div>
+          <p style="font-weight: bold;color: var(--accent-yellow);">
+            {t(locale, "experience.job1.title")}
+          </p>
+          <p><span>{t(locale, "experience.job1.task1")}</span></p>
+          <p><span>{t(locale, "experience.job1.task2")}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

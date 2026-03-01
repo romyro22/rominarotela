@@ -1,0 +1,43 @@
+{
+  "name": "rominarotela",
+  "version": "1.0.0",
+  "description": "Portfolio & Art Gallery — Cloudflare Workers + Astro",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && echo '_worker.js' > dist/.assetsignore && wrangler deploy",
+    "check": "biome check src/ tests/",
+    "check:fix": "biome check --write src/ tests/",
+    "test": "vitest run",
+    "typecheck": "astro check && tsc --noEmit",
+    "validate": "biome check src/ tests/ && astro check && tsc --noEmit && vitest run",
+    "security-audit": "bash scripts/security-audit.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romyro22/rominarotela.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/romyro22/rominarotela/issues"
+  },
+  "homepage": "https://github.com/romyro22/rominarotela#readme",
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "astro": "^5.18.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@biomejs/biome": "^2.4.4",
+    "@cloudflare/vitest-pool-workers": "^0.12.18",
+    "@cloudflare/workers-types": "^4.20260305.0",
+    "@vitest/coverage-istanbul": "^3.2.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.69.0"
+  }
+}

@@ -1,0 +1,23 @@
+---
+import DevelopmentSection from "../components/DevelopmentSection.astro";
+import ExperienceSection from "../components/ExperienceSection.astro";
+import Hero from "../components/Hero.astro";
+import PersonalProjects from "../components/PersonalProjects.astro";
+import SkillBadges from "../components/SkillBadges.astro";
+import WorkProjects from "../components/WorkProjects.astro";
+import { t } from "../i18n/utils";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const locale = Astro.currentLocale ?? "es";
+---
+
+<BaseLayout title={t(locale, "page.portfolio.title")}>
+  <main>
+    <Hero locale={locale} />
+    <DevelopmentSection locale={locale} />
+    <ExperienceSection locale={locale} />
+    <SkillBadges locale={locale} />
+    <WorkProjects locale={locale} />
+    <PersonalProjects locale={locale} />
+  </main>
+</BaseLayout>

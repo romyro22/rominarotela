@@ -1,0 +1,40 @@
+---
+import ArtworkCard from "../components/ArtworkCard.astro";
+import ArtworkModal from "../components/ArtworkModal.astro";
+import GallerySearch from "../components/GallerySearch.astro";
+import { t } from "../i18n/utils";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getAllArtworks, getDistinctTechniques } from "../services/artwork-service";
+import { getCachedOrFetch } from "../services/cache-service";
+
+const locale = Astro.currentLocale ?? "es";
+const runtime = Astro.locals.runtime;
+const { DB, CACHE } = runtime.env;
+
+const artworks = await getCachedOrFetch(CACHE, "artworks:all", () => getAllArtworks(DB));
+const techniques = await getCachedOrFetch(CACHE, "artworks:techniques", () =>
+  getDistinctTechniques(DB),
+);
+---
+
+<BaseLayout title={t(locale, "gallery.title")} bodyClass="gallery-theme">
+  <div class="gallery-header">
+    <div class="wrap">
+      <div class="topbar">
+        <div style="display:flex;gap:12px;align-items:center">
+          <h1>{t(locale, "gallery.title")}</h1>
+        </div>
+        <GallerySearch locale={locale} techniques={techniques} />
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div id="results-count" class="muted" style="margin:6px 2px 16px"></div>
+    <section id="grid" class="grid" aria-live="polite">
+      {artworks.map((artwork) => <ArtworkCard artwork={artwork} locale={locale} />)}
+    </section>
+  </main>
+
+  <ArtworkModal locale={locale} artworks={artworks} />
+</BaseLayout>

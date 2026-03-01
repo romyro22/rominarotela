@@ -1,0 +1,81 @@
+---
+import { t } from "../i18n/utils";
+
+interface Props {
+  locale: string;
+  techniques: string[];
+}
+
+const { locale, techniques } = Astro.props;
+---
+
+<div class="controls">
+  <input
+    id="q"
+    class="input"
+    type="search"
+    placeholder={t(locale, "gallery.search.placeholder")}
+    aria-label={t(locale, "gallery.search.placeholder")}
+  />
+</div>
+<div class="controls">
+  <select id="filter-tech" aria-label={locale === "en" ? "Filter by technique" : "Filtrar por tecnica"}>
+    <option value="">{t(locale, "gallery.filter.all")}</option>
+    {techniques.map((tech) => (
+      <option value={tech}>{tech}</option>
+    ))}
+  </select>
+</div>
+
+<script is:inline define:vars={{ locale }}>
+  (function () {
+    var searchInput = document.getElementById("q");
+    var filterSelect = document.getElementById("filter-tech");
+    var resultsCount = document.getElementById("results-count");
+    var noResultsLabel = locale === "en" ? "No results" : "Sin resultados";
+
+    function normalize(str) {
+      return (str || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    }
+
+    function formatCount(count) {
+      if (count === 0) return noResultsLabel;
+      if (locale === "en") {
+        return count + " artwork" + (count > 1 ? "s" : "") + " found";
+      }
+      return count + " obra" + (count > 1 ? "s" : "") + " encontrada" + (count > 1 ? "s" : "");
+    }
+
+    function filterCards() {
+      var query = normalize(searchInput.value.trim());
+      var tech = filterSelect.value;
+      var cards = document.querySelectorAll(".card");
+      var visibleCount = 0;
+
+      cards.forEach(function (card) {
+        var searchable = normalize(card.getAttribute("data-searchable") || "");
+        var cardTech = card.getAttribute("data-technique-es") || "";
+
+        var matchesQuery = !query || searchable.indexOf(query) !== -1;
+        var matchesTech = !tech || cardTech === tech;
+
+        if (matchesQuery && matchesTech) {
+          card.style.display = "";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      if (resultsCount) {
+        resultsCount.textContent = formatCount(visibleCount);
+      }
+    }
+
+    searchInput.addEventListener("input", filterCards);
+    filterSelect.addEventListener("change", filterCards);
+
+    // Initial count
+    filterCards();
+  })();
+</script>

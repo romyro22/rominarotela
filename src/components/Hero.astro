@@ -1,0 +1,69 @@
+---
+import { t } from "../i18n/utils";
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container hero-wrap">
+    <div>
+      <span class="tag">{t(locale, "hero.greeting")}</span>
+      <h1>Romina Rotela <span>{t(locale, "hero.title")}</span></h1>
+      <p class="subtitle">{t(locale, "hero.subtitle")}</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#proyectos">{t(locale, "hero.viewProjects")}</a>
+        <a class="btn btn-ghost" href="#habilidades">{t(locale, "hero.skills")}</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <div class="portrait-inner"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const header = document.querySelector("header");
+    const getOffset = () =>
+      (header ? header.getBoundingClientRect().height : 0) + 8;
+
+    function smoothTo(hash: string) {
+      const target = document.querySelector(hash);
+      if (!target) return;
+      const top =
+        window.pageYOffset + target.getBoundingClientRect().top - getOffset();
+      window.scrollTo({ top, behavior: "smooth" });
+      history.pushState(null, "", hash);
+    }
+
+    document.querySelectorAll('.btn[href^="#"]').forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const hash = (btn as HTMLAnchorElement).getAttribute("href");
+        if (!hash || hash === "#") return;
+
+        e.preventDefault();
+
+        const r = btn.getBoundingClientRect();
+        const mouseEvent = e as MouseEvent;
+        (btn as HTMLElement).style.setProperty(
+          "--x",
+          mouseEvent.clientX - r.left + "px",
+        );
+        (btn as HTMLElement).style.setProperty(
+          "--y",
+          mouseEvent.clientY - r.top + "px",
+        );
+        btn.classList.remove("is-rippling");
+        void (btn as HTMLElement).offsetWidth;
+        btn.classList.add("is-rippling");
+        setTimeout(() => btn.classList.remove("is-rippling"), 520);
+
+        smoothTo(hash);
+      });
+    });
+  })();
+</script>
