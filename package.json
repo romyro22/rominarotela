@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy",
+    "deploy": "astro build && echo '_worker.js' > dist/.assetsignore && wrangler deploy",
     "check": "biome check src/ tests/",
     "check:fix": "biome check --write src/ tests/",
     "test": "vitest run",
