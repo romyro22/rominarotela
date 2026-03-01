@@ -5,8 +5,7 @@ import { deleteImage, listArtworkImages } from "../../../services/image-service"
 import type { UpdateArtworkInput } from "../../../types/artwork";
 import { isAuthorized } from "../../../utils/auth";
 import { jsonError, jsonSuccess } from "../../../utils/response";
-
-const SAFE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+import { MAX_TAG_LENGTH, MAX_TAGS, SAFE_ID_PATTERN } from "../../../utils/validation";
 
 /** Extracts and validates artwork ID from params. Returns [id, null] or [null, errorResponse]. */
 function extractArtworkId(params: APIContext["params"]): [string, null] | [null, Response] {
@@ -91,6 +90,8 @@ function validateUpdateInput(body: Record<string, unknown>): UpdateArtworkInput 
 
   if ("tags" in body) {
     if (!Array.isArray(body.tags) || !body.tags.every((t) => typeof t === "string")) return null;
+    if (body.tags.length > MAX_TAGS) return null;
+    if (body.tags.some((t: string) => t.length > MAX_TAG_LENGTH)) return null;
     result.tags = body.tags;
   }
 
@@ -104,7 +105,7 @@ export async function PUT(context: APIContext): Promise<Response> {
   const [artworkId, idError] = extractArtworkId(context.params);
   if (idError) return idError;
 
-  if (!isAuthorized(context.request, API_KEY)) {
+  if (!(await isAuthorized(context.request, API_KEY))) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);
   }
 
@@ -156,7 +157,7 @@ export async function DELETE(context: APIContext): Promise<Response> {
   const [artworkId, idError] = extractArtworkId(context.params);
   if (idError) return idError;
 
-  if (!isAuthorized(context.request, API_KEY)) {
+  if (!(await isAuthorized(context.request, API_KEY))) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);
   }
 
@@ -189,7 +190,10 @@ export async function DELETE(context: APIContext): Promise<Response> {
         event: "artwork.delete.failed",
         artworkId,
         errorMessage: message,
-        fixSuggestion: "Check D1 and R2 bindings",
+        fixSuggestion:
+          "D1 record may already be deleted while R2 images remain orphaned. Check R2 for artworks/" +
+          artworkId +
+          "/ prefix",
       }),
     );
     return jsonError("DELETE_FAILED", "Failed to delete artwork", 500);

@@ -8,14 +8,22 @@ import { getCachedOrFetch, invalidateArtworkCache } from "../../../services/cach
 import type { CreateArtworkInput } from "../../../types/artwork";
 import { isAuthorized } from "../../../utils/auth";
 import { jsonError, jsonSuccess } from "../../../utils/response";
-
-const SAFE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+import {
+  MAX_TAG_LENGTH,
+  MAX_TAGS,
+  MAX_TECHNIQUE_LENGTH,
+  SAFE_ID_PATTERN,
+} from "../../../utils/validation";
 
 /** GET /api/artworks — List all artworks. Supports ?technique= filter. Cached via KV. */
 export async function GET(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { DB, CACHE } = runtime.env;
   const technique = context.url.searchParams.get("technique");
+
+  if (technique && technique.length > MAX_TECHNIQUE_LENGTH) {
+    return jsonError("INVALID_TECHNIQUE", "Technique parameter exceeds maximum length", 400);
+  }
 
   try {
     if (technique) {
@@ -76,6 +84,8 @@ function validateCreateInput(body: Record<string, unknown>): CreateArtworkInput 
 
   if ("tags" in body) {
     if (!Array.isArray(body.tags) || !body.tags.every((t) => typeof t === "string")) return null;
+    if (body.tags.length > MAX_TAGS) return null;
+    if (body.tags.some((t: string) => t.length > MAX_TAG_LENGTH)) return null;
   }
 
   return {
@@ -104,7 +114,7 @@ export async function POST(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { DB, CACHE, API_KEY } = runtime.env;
 
-  if (!isAuthorized(context.request, API_KEY)) {
+  if (!(await isAuthorized(context.request, API_KEY))) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);
   }
 

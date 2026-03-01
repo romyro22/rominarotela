@@ -89,3 +89,71 @@ export function createAuthenticatedContext(options: MockContextOptions = {}): AP
     },
   });
 }
+
+/** Options for creating a FormData upload context. */
+export interface FormDataContextOptions {
+  /** File to upload. Omit to test missing file. */
+  file?: File;
+  /** Artwork ID form field. Omit to test missing artworkId. */
+  artworkId?: string;
+  /** Whether to include Bearer auth header. Defaults to true. */
+  authenticated?: boolean;
+}
+
+/** Creates a mock APIContext with a FormData request for image upload testing. */
+export function createUploadContext(options: FormDataContextOptions = {}): APIContext {
+  const { file, artworkId, authenticated = true } = options;
+
+  const formData = new FormData();
+  if (file) formData.append("file", file);
+  if (artworkId !== undefined) formData.append("artworkId", artworkId);
+
+  const headers: Record<string, string> = {};
+  if (authenticated) {
+    headers.Authorization = `Bearer ${env.API_KEY}`;
+  }
+
+  const request = new Request("https://example.com/api/images/upload", {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  const parsedUrl = new URL("https://example.com/api/images/upload");
+
+  return {
+    request,
+    url: parsedUrl,
+    params: {},
+    locals: {
+      runtime: {
+        env: env as typeof env & {
+          ASSETS: { fetch: (req: Request | string) => Promise<Response> };
+        },
+        cf: {} as never,
+        caches: {} as never,
+        ctx: {
+          waitUntil: () => {},
+          passThroughOnException: () => {},
+        } as never,
+      },
+    },
+    props: {},
+    redirect: (path: string, status = 302) =>
+      new Response(null, { status, headers: { Location: path } }),
+    cookies: {} as never,
+    site: undefined,
+    generator: "astro",
+    currentLocale: "es",
+    preferredLocale: "es",
+    preferredLocaleList: ["es", "en"],
+    rewrite: (() => {}) as never,
+    originPathname: parsedUrl.pathname,
+    isPrerendered: false,
+    callAction: (() => {}) as never,
+    routePattern: "",
+    getActionResult: (() => undefined) as never,
+    clientAddress: "127.0.0.1",
+    csp: { nonce: "" },
+  } as unknown as APIContext;
+}

@@ -44,7 +44,11 @@ export async function invalidateArtworkCache(
     await cache.delete(`artwork:${artworkId}`);
   }
 
-  // Invalidate per-technique filter caches (prefixed with artworks:technique:)
-  const techniqueKeys = await cache.list({ prefix: "artworks:technique:" });
-  await Promise.all(techniqueKeys.keys.map((k) => cache.delete(k.name)));
+  // Invalidate per-technique filter caches with pagination (KV list returns max 1000 keys)
+  let cursor: string | undefined;
+  do {
+    const listed = await cache.list({ prefix: "artworks:technique:", cursor });
+    await Promise.all(listed.keys.map((k) => cache.delete(k.name)));
+    cursor = listed.list_complete ? undefined : listed.cursor;
+  } while (cursor);
 }

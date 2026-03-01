@@ -5,7 +5,7 @@ import { jsonError, jsonSuccess } from "../../../utils/response";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-const SAFE_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+import { MAX_FILENAME_LENGTH, SAFE_ID_PATTERN } from "../../../utils/validation";
 
 const ALLOWED_MIME_TYPES: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -50,7 +50,7 @@ export async function POST(context: APIContext): Promise<Response> {
   const runtime = context.locals.runtime;
   const { STORAGE, API_KEY } = runtime.env;
 
-  if (!isAuthorized(context.request, API_KEY)) {
+  if (!(await isAuthorized(context.request, API_KEY))) {
     return jsonError("UNAUTHORIZED", "Valid Bearer token is required", 401);
   }
 
@@ -96,7 +96,9 @@ export async function POST(context: APIContext): Promise<Response> {
   }
 
   const extension = ALLOWED_MIME_TYPES[detectedMime];
-  const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const sanitizedFilename = file.name
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .slice(0, MAX_FILENAME_LENGTH);
   const baseName = sanitizedFilename.replace(/\.[^.]+$/, "");
   const finalFilename = baseName ? `${baseName}${extension}` : `upload${extension}`;
   const key = `artworks/${artworkId}/${finalFilename}`;

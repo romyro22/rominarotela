@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { GET } from "../../src/pages/api/images/[...key]";
 import { POST } from "../../src/pages/api/images/upload";
 import type { ApiError, ApiSuccess } from "../../src/types/api";
-import { createMockContext } from "../helpers/mock-context";
+import { createMockContext, createUploadContext } from "../helpers/mock-context";
 
 /** Creates a minimal JPEG file (valid magic bytes + minimal JFIF structure). */
 function createJpegBlob(sizeBytes = 100): File {
@@ -25,6 +25,39 @@ function createPngBlob(sizeBytes = 100): File {
   return new File([buffer], "test-image.png", { type: "image/png" });
 }
 
+/** Creates a WebP file (RIFF + WEBP magic bytes at offset 8). */
+function createWebpBlob(sizeBytes = 100): File {
+  const buffer = new Uint8Array(sizeBytes);
+  // RIFF header (bytes 0-3)
+  buffer[0] = 0x52;
+  buffer[1] = 0x49;
+  buffer[2] = 0x46;
+  buffer[3] = 0x46;
+  // File size placeholder (bytes 4-7)
+  buffer[4] = 0x00;
+  buffer[5] = 0x00;
+  buffer[6] = 0x00;
+  buffer[7] = 0x00;
+  // WEBP marker (bytes 8-11)
+  buffer[8] = 0x57;
+  buffer[9] = 0x45;
+  buffer[10] = 0x42;
+  buffer[11] = 0x50;
+  return new File([buffer], "test-image.webp", { type: "image/webp" });
+}
+
+/** Creates a GIF file (valid magic bytes GIF89a). */
+function createGifBlob(sizeBytes = 100): File {
+  const buffer = new Uint8Array(sizeBytes);
+  buffer[0] = 0x47;
+  buffer[1] = 0x49;
+  buffer[2] = 0x46;
+  buffer[3] = 0x38;
+  buffer[4] = 0x39;
+  buffer[5] = 0x61;
+  return new File([buffer], "test-image.gif", { type: "image/gif" });
+}
+
 /** Creates a file with invalid magic bytes (plain text disguised as image). */
 function createFakeImageBlob(): File {
   const encoder = new TextEncoder();
@@ -34,19 +67,7 @@ function createFakeImageBlob(): File {
 
 describe("POST /api/images/upload", () => {
   it("should upload valid JPEG image with auth", async () => {
-    const formData = new FormData();
-    formData.append("file", createJpegBlob());
-    formData.append("artworkId", "art-test");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
-    });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    // Override request with FormData-bearing request
-    Object.defineProperty(ctx, "request", { value: request });
-
+    const ctx = createUploadContext({ file: createJpegBlob(), artworkId: "art-test" });
     const response = await POST(ctx);
     const body = (await response.json()) as ApiSuccess<{
       key: string;
@@ -61,34 +82,18 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should return 401 without auth", async () => {
-    const formData = new FormData();
-    formData.append("file", createJpegBlob());
-    formData.append("artworkId", "art-test");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      body: formData,
+    const ctx = createUploadContext({
+      file: createJpegBlob(),
+      artworkId: "art-test",
+      authenticated: false,
     });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
     const response = await POST(ctx);
 
     expect(response.status).toBe(401);
   });
 
   it("should return 400 without file in FormData", async () => {
-    const formData = new FormData();
-    formData.append("artworkId", "art-test");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
-    });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
+    const ctx = createUploadContext({ artworkId: "art-test" });
     const response = await POST(ctx);
     const body = (await response.json()) as ApiError;
 
@@ -97,18 +102,10 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should return 400 for invalid artworkId (path traversal attempt)", async () => {
-    const formData = new FormData();
-    formData.append("file", createJpegBlob());
-    formData.append("artworkId", "../../secrets/config");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
+    const ctx = createUploadContext({
+      file: createJpegBlob(),
+      artworkId: "../../secrets/config",
     });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
     const response = await POST(ctx);
     const body = (await response.json()) as ApiError;
 
@@ -117,17 +114,7 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should return 400 without artworkId field", async () => {
-    const formData = new FormData();
-    formData.append("file", createJpegBlob());
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
-    });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
+    const ctx = createUploadContext({ file: createJpegBlob() });
     const response = await POST(ctx);
     const body = (await response.json()) as ApiError;
 
@@ -136,19 +123,10 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should return 400 when file exceeds max size", async () => {
-    const largeFile = createJpegBlob(11 * 1024 * 1024); // 11 MB
-    const formData = new FormData();
-    formData.append("file", largeFile);
-    formData.append("artworkId", "art-test");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
+    const ctx = createUploadContext({
+      file: createJpegBlob(10 * 1024 * 1024 + 1),
+      artworkId: "art-test",
     });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
     const response = await POST(ctx);
     const body = (await response.json()) as ApiError;
 
@@ -157,18 +135,7 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should return 400 when magic bytes don't match declared MIME", async () => {
-    const formData = new FormData();
-    formData.append("file", createFakeImageBlob());
-    formData.append("artworkId", "art-test");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
-    });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
+    const ctx = createUploadContext({ file: createFakeImageBlob(), artworkId: "art-test" });
     const response = await POST(ctx);
     const body = (await response.json()) as ApiError;
 
@@ -177,24 +144,33 @@ describe("POST /api/images/upload", () => {
   });
 
   it("should upload valid PNG and derive extension from magic bytes", async () => {
-    const formData = new FormData();
-    formData.append("file", createPngBlob());
-    formData.append("artworkId", "art-png");
-
-    const request = new Request("https://example.com/api/images/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.API_KEY}` },
-      body: formData,
-    });
-    const ctx = createMockContext({ method: "POST", url: "https://example.com/api/images/upload" });
-    Object.defineProperty(ctx, "request", { value: request });
-
+    const ctx = createUploadContext({ file: createPngBlob(), artworkId: "art-png" });
     const response = await POST(ctx);
     const body = (await response.json()) as ApiSuccess<{ key: string; contentType: string }>;
 
     expect(response.status).toBe(201);
     expect(body.data.key).toMatch(/\.png$/);
     expect(body.data.contentType).toBe("image/png");
+  });
+
+  it("should upload valid WebP with RIFF+WEBP magic bytes", async () => {
+    const ctx = createUploadContext({ file: createWebpBlob(), artworkId: "art-webp" });
+    const response = await POST(ctx);
+    const body = (await response.json()) as ApiSuccess<{ key: string; contentType: string }>;
+
+    expect(response.status).toBe(201);
+    expect(body.data.key).toMatch(/\.webp$/);
+    expect(body.data.contentType).toBe("image/webp");
+  });
+
+  it("should upload valid GIF", async () => {
+    const ctx = createUploadContext({ file: createGifBlob(), artworkId: "art-gif" });
+    const response = await POST(ctx);
+    const body = (await response.json()) as ApiSuccess<{ key: string; contentType: string }>;
+
+    expect(response.status).toBe(201);
+    expect(body.data.key).toMatch(/\.gif$/);
+    expect(body.data.contentType).toBe("image/gif");
   });
 });
 
