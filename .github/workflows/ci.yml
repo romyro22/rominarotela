@@ -27,6 +27,9 @@ jobs:
       - name: Create .dev.vars for tests
         run: echo "API_KEY=${{ secrets.API_KEY_TEST }}" > .dev.vars
 
+      - name: Create dist/ for vitest-pool-workers asset binding
+        run: mkdir -p dist
+
       - run: npm run validate
 
   deploy:
